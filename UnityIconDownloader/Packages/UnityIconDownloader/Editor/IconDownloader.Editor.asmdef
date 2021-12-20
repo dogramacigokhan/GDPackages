@@ -1,0 +1,19 @@
+{
+  "name": "IconDownloader.Editor",
+  "rootNamespace": "IconDownloader",
+  "references": [
+    "IconDownloader.Runtime",
+    "UniRx"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
