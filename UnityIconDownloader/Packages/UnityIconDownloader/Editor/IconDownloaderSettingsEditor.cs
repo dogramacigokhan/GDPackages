@@ -16,8 +16,8 @@ namespace IconDownloader.Editor
 			"DISCLAIMER: These are the preview images (usually with a watermark) for premium icons. " +
 			"Downloading and/or using preview images may violate the Terms of Service of the API(s) " +
 			"regardless of private/personal usage.\n" +
-			"By enabling this option, you are accepting to download them with your own risk." +
-			"Maintainer(s) of this tool cannot be hold liable for copyright infringements.";
+			"By enabling this option, you are accepting to download them at your own risk." +
+			"The maintainer(s) of this tool cannot be held liable for copyright infringements.";
 
 		private IconDownloaderSettings settings;
 		private SerializedProperty defaultSaveFolder;
