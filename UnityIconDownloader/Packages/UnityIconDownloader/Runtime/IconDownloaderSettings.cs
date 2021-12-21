@@ -19,6 +19,7 @@ namespace IconDownloader
 		[SerializeField] internal bool enableDownloadingAsPreview;
 		[SerializeField] internal bool downloadLicenseData;
 		[SerializeField] internal bool showOnImageEditor;
+		[SerializeField] internal bool showOnRawImageEditor;
 		[SerializeField] internal List<IconApiType> enabledApis = new List<IconApiType>();
 		[SerializeField] internal List<ApiKey> serializedApiKeys = new List<ApiKey>();
 		internal Dictionary<IconApiType, string> PlayerPrefsApiKeys { get; private set; }
@@ -28,6 +29,7 @@ namespace IconDownloader
 		public bool EnableDownloadingAsPreview => this.enableDownloadingAsPreview;
 		public bool DownloadLicenseData => this.downloadLicenseData;
 		public bool ShowOnImageEditor => this.showOnImageEditor;
+		public bool ShowOnRawImageEditor => this.showOnRawImageEditor;
 
 		public IReadOnlyDictionary<IconApiType, bool> EnabledApis => Enum.GetValues(typeof(IconApiType))
 			.Cast<IconApiType>()

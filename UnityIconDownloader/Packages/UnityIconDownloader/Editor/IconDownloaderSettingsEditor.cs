@@ -25,6 +25,7 @@ namespace IconDownloader.Editor
 		private SerializedProperty enableDownloadingAsPreview;
 		private SerializedProperty downloadLicenseData;
 		private SerializedProperty showOnImageEditor;
+		private SerializedProperty showOnRawImageEditor;
 		private List<IconApiType> iconApiTypes;
 		private Dictionary<IconApiType, bool> iconApiFoldStates;
 
@@ -36,6 +37,7 @@ namespace IconDownloader.Editor
 			this.enableDownloadingAsPreview = this.serializedObject.FindProperty(nameof(this.settings.enableDownloadingAsPreview));
 			this.downloadLicenseData = this.serializedObject.FindProperty(nameof(this.settings.downloadLicenseData));
 			this.showOnImageEditor = this.serializedObject.FindProperty(nameof(this.settings.showOnImageEditor));
+			this.showOnRawImageEditor = this.serializedObject.FindProperty(nameof(this.settings.showOnRawImageEditor));
 
 			this.iconApiTypes = Enum.GetValues(typeof(IconApiType)).Cast<IconApiType>().ToList();
 			this.iconApiFoldStates = this.iconApiTypes.ToDictionary(apiType => apiType, _ => false);
@@ -59,6 +61,7 @@ namespace IconDownloader.Editor
 				settingsAsset.defaultSaveFolder = IconImporter.DefaultSaveDirectory;
 				settingsAsset.downloadLicenseData = true;
 				settingsAsset.showOnImageEditor = true;
+				settingsAsset.showOnRawImageEditor = true;
 
 				AssetDatabase.CreateAsset(settingsAsset, targetPath);
 				AssetDatabase.Refresh();
@@ -184,9 +187,14 @@ namespace IconDownloader.Editor
 			
 			// Integrations
 			EditorGUILayout.LabelField("Integrations", EditorStyles.boldLabel);
+			
 			this.showOnImageEditor.boolValue = EditorGUILayout.ToggleLeft(
 				"Image Component",
 				this.showOnImageEditor.boolValue);
+			
+			this.showOnRawImageEditor.boolValue = EditorGUILayout.ToggleLeft(
+				"RawImage Component",
+				this.showOnRawImageEditor.boolValue);
 			
 			EditorGUILayout.Space(5);
 

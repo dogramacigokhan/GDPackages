@@ -24,7 +24,7 @@ namespace IconDownloader.Editor
 		private void OnEnable()
 		{
 			this.downloadDisposable = new SerialDisposable();
-			this.iconDownloadFlow = new IconDownloadFlow(new IconDownloadEditorUI());
+			this.iconDownloadFlow = EditModeIconDownloader.Instance;
 			this.settings = IconDownloaderSettings.FromResources;
             this.searchPref = IconSearchPreferences.FromCache;
 		}

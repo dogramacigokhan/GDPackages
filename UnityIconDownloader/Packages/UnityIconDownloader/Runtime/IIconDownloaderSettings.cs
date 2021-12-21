@@ -10,6 +10,7 @@ namespace IconDownloader
 		bool EnableDownloadingAsPreview { get; }
 		bool DownloadLicenseData { get; }
 		bool ShowOnImageEditor { get; }
+		bool ShowOnRawImageEditor { get; }
 		IReadOnlyDictionary<IconApiType, bool> EnabledApis { get; }
 
 		string GetApiKey(IconApiType apiType);

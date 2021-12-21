@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 namespace IconDownloader.Editor.Extensions
 {
-	[CustomEditor(typeof(Image), true)]
+	[CustomEditor(typeof(RawImage), true)]
 	[CanEditMultipleObjects]
-	public class ImageEditor : UnityEditor.UI.ImageEditor
+	public class RawImageEditor : UnityEditor.UI.RawImageEditor
 	{
-		private Image image;
+		private RawImage image;
 		private string searchTerm;
 		private IconDownloadFlow iconDownloadFlow;
 		private IIconDownloaderSettings settings;
@@ -18,7 +18,7 @@ namespace IconDownloader.Editor.Extensions
 
 		private void Awake()
 		{
-			this.image = this.target as Image;
+			this.image = this.target as RawImage;
 		}
 
 		protected override void OnEnable()
@@ -40,7 +40,7 @@ namespace IconDownloader.Editor.Extensions
 		{
 			base.OnInspectorGUI();
 
-			if (!this.settings.ShowOnImageEditor)
+			if (!this.settings.ShowOnRawImageEditor)
 			{
 				return;
 			}
@@ -54,16 +54,8 @@ namespace IconDownloader.Editor.Extensions
 				this.iconDownloadDisposable.Disposable = this.iconDownloadFlow
 					.DownloadWithSelection(this.searchTerm, count: 100)
 					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
-					.Select(iconData =>
-					{
-						// Make sure to import texture as Sprite
-						var iconTextureImporter = (TextureImporter) AssetImporter.GetAtPath(iconData.AssetPath);
-						iconTextureImporter.textureType = TextureImporterType.Sprite;
-						iconTextureImporter.SaveAndReimport();
-						
-						return AssetDatabase.LoadAssetAtPath<Sprite>(iconData.AssetPath);
-					})
-					.Subscribe(sprite => this.image.sprite = sprite);
+					.Select(iconData => AssetDatabase.LoadAssetAtPath<Texture2D>(iconData.AssetPath))
+					.Subscribe(texture => this.image.texture = texture);
 			}
 			
 			EditorGUILayout.EndHorizontal();
