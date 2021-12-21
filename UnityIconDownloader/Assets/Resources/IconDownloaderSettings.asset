@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c76fa189c7439eae9008e2c092fa1d, type: 3}
   m_Name: IconDownloaderSettings
   m_EditorClassIdentifier: 
-  defaultSaveFolder: /Users/gokhandogramaci/Projects/GDPackages/UnityIconDownloader/Assets/Icons
+  defaultSaveFolder: 
   apiKeyStoringStrategy: 1
   enableDownloadingAsPreview: 1
   downloadLicenseData: 1
