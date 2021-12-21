@@ -1,8 +1,8 @@
 namespace IconDownloader.Editor
 {
-	public class EditModeIconDownloader
+	public static class EditModeIconDownloader
 	{
 		private static readonly IconDownloadFlow instance;
-		public static IconDownloadFlow Instance = instance ??= new IconDownloadFlow(new IconDownloadEditorUI());
+		public static readonly IconDownloadFlow Instance = instance ??= new IconDownloadFlow(new IconDownloadEditorUI());
 	}
 }
