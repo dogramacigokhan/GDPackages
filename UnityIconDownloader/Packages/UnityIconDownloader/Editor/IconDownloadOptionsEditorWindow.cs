@@ -134,7 +134,6 @@ namespace IconDownloader.Editor
 
         private void OnDestroy()
         {
-	        this.iconPreview?.Dispose();
             this.optionsSubject?.OnCompleted();
             this.optionsSubject?.Dispose();
         }

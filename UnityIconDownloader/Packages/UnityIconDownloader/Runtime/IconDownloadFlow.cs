@@ -40,8 +40,11 @@ namespace IconDownloader
 				.Select(iconApi => iconApi.SearchIcons(searchTerm, searchPreferences, count: 1))
 				.Merge()
 				.Take(1)
-				.ContinueWith(iconPreview => iconPreview.LoadPreviewTexture().Select(_ => iconPreview))
-				.ShowDownloadOptionsUI(this.iconDownloadUi, this.settings.defaultSaveFolder);
+				.ContinueWith(iconPreview => iconPreview
+					.LoadPreviewTexture()
+					.Select(_ => iconPreview)
+					.ShowDownloadOptionsUI(this.iconDownloadUi, this.settings.defaultSaveFolder)
+					.DoOnCompleted(iconPreview.Dispose));
 		}
 
 		public IObservable<IconDownloadOptions> DownloadWithSelection(

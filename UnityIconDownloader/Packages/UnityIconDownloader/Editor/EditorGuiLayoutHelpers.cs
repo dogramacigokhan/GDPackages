@@ -9,10 +9,18 @@ namespace IconDownloader.Editor
 		public static void DrawHorizontalLine() => EditorGUILayout
 			.LabelField("", GUI.skin.horizontalSlider);
 
-		public static void DrawTexture(Texture2D texture, int height) => GUI.DrawTexture(
-			EditorGUILayout.GetControlRect(false, height, GUILayout.Width(height)),
-			texture,
-			ScaleMode.ScaleToFit);
+		public static void DrawTexture(Texture2D texture, int height)
+		{
+			if (texture == null)
+			{
+				return;
+			}
+			
+			GUI.DrawTexture(
+				EditorGUILayout.GetControlRect(false, height, GUILayout.Width(height)),
+				texture,
+				ScaleMode.ScaleToFit);
+		}
 
 		public static void DrawHorizontallyCentered(Action drawElements)
 		{

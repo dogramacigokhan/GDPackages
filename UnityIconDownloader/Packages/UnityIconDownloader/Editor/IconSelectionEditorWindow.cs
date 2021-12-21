@@ -21,7 +21,6 @@ namespace IconDownloader.Editor
         private Vector2 scrollPos;
         private Texture premiumIcon;
         private bool downloadInProgress;
-        private string selectedIconId;
         private SerialDisposable searchDisposable;
 
         public IObservable<IconSelectionResult> SetIconSource(
@@ -30,15 +29,12 @@ namespace IconDownloader.Editor
             IconSearchPreferences searchPreferences)
         {
             this.iconPreviews = new List<IconPreview>();
-            this.selectedIconId = null;
 
             this.iconPreviewDisposable.Disposable = iconPreview
                 .DoOnSubscribe(() => this.downloadInProgress = true)
+                .SelectMany(preview => preview.LoadPreviewTexture().Select(_ => preview))
                 .DoOnCancel(() => this.downloadInProgress = false)
                 .DoOnTerminate(() => this.downloadInProgress = false)
-                .SelectMany(preview => preview
-                    .LoadPreviewTexture()
-                    .Select(_ => preview))
                 .Subscribe(preview => this.iconPreviews.Add(preview));
             
             this.searchTerm = searchTerm;
@@ -116,10 +112,7 @@ namespace IconDownloader.Editor
 
                     if (GUI.Button(rect, selectContent))
                     {
-                        this.selectedIconId = iconPreview.IconId;
                         this.selectionResult?.OnNext(IconSelectionResult.IconSelected(iconPreview));
-                        this.selectionResult?.OnCompleted();
-                        this.Close();
                     }
                     EditorGUILayout.EndVertical();
                 });
@@ -135,12 +128,7 @@ namespace IconDownloader.Editor
             {
                 foreach (var iconPreview in this.iconPreviews)
                 {
-                    // Dispose the icon previews except the selected one
-                    if (string.IsNullOrEmpty(this.selectedIconId)
-                        || iconPreview.IconId != this.selectedIconId)
-                    {
-                        iconPreview.Dispose();
-                    }
+                    iconPreview.Dispose();
                 }
             }
 

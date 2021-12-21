@@ -34,9 +34,11 @@ namespace IconDownloader.IconApi
 			this.TexturesBySize = texturesBySize;
 		}
 
-		public IObservable<Texture2D> LoadPreviewTexture() => ObservableWebRequest
-			.GetTexture(this.previewTextureUrl)
-			.Do(texture => this.previewTexture.Value = texture);
+		public IObservable<Texture2D> LoadPreviewTexture() => this.previewTexture.Value != null
+			? this.previewTexture
+			: ObservableWebRequest
+				.GetTexture(this.previewTextureUrl)
+				.Do(texture => this.previewTexture.Value = texture);
 
 		public void Dispose()
 		{
