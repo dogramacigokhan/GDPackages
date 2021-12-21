@@ -18,8 +18,8 @@ namespace IconDownloader
 		public IconDownloadFlow(IIconDownloadUI iconDownloadUI)
 		{
 			this.iconDownloadUi = iconDownloadUI;
-			
 			this.settings = IconDownloaderSettings.FromResources;
+			
 			if (this.settings == null)
 			{
 				Debug.LogError("Create a settings asset first!");
