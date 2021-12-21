@@ -3,17 +3,16 @@
     "displayName": "Unity Icon Downloader",
     "version": "1.0.0",
     "unity": "2021.1",
-    "description": "Editor tool to download icons into your Unity project easily.",
+    "description": "Tool to download icons into your Unity project easily.",
     "author": {
         "name": "Gokhan Dogramaci",
         "email": "dogramacigokhan@gmail.com",
         "url": "https://github.com/dogramacigokhan"
     },
     "keywords": [
-        "unity",
-        "editor",
         "icon",
         "download",
+        "find",
         "texture",
         "sprite",
         "game",
