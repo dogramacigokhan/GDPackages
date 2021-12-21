@@ -44,7 +44,7 @@ namespace IconDownloader.Editor
 		[MenuItem("Tools/Icon Downloader/Settings", isValidateFunction: false, priority: 2)]
 		public static void ShowSettings()
 		{
-			var settingsAsset = Resources.Load<IconDownloaderSettings>(nameof(IconDownloaderSettings));
+			var settingsAsset = (IconDownloaderSettings) IconDownloaderSettings.FromResources;
 			if (settingsAsset == null)
 			{
 				settingsAsset = CreateInstance<IconDownloaderSettings>();

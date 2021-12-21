@@ -70,11 +70,6 @@ namespace IconDownloader.Editor
 						"Assets",
 						targetPath.Split(new[] { "Assets" }, StringSplitOptions.None)[1].Substring(1));
 					
-					// Make sure to import texture as Sprite
-					var iconTextureImporter = (TextureImporter) AssetImporter.GetAtPath(assetPath);
-					iconTextureImporter.textureType = TextureImporterType.Sprite;
-					iconTextureImporter.SaveAndReimport();
-					
 					var importedIcon = new IconData(
 						iconData.IconId,
 						iconName,

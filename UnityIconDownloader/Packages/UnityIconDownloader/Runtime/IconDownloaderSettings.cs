@@ -10,6 +10,9 @@ namespace IconDownloader
 	{
 		private const string ApiKeyPrefPrefix = "IconDownloaderAPIKey_";
 
+		public static readonly IIconDownloaderSettings FromResources =
+			Resources.Load<IconDownloaderSettings>(nameof(IconDownloaderSettings));
+
 		[SerializeField] internal string defaultSaveFolder;
 		[SerializeField] internal ApiKeyStoringStrategy apiKeyStoringStrategy;
 		[SerializeField] internal bool enableDownloadingAsPreview;

@@ -17,11 +17,11 @@ namespace IconDownloader.Editor
         private string savePath;
 
         private Dictionary<int, bool> downloadSizeStatus;
-        private IconDownloaderSettings settings;
+        private IIconDownloaderSettings settings;
 
         private void OnEnable()
         {
-	        this.settings = Resources.Load<IconDownloaderSettings>(nameof(IconDownloaderSettings));
+	        this.settings = IconDownloaderSettings.FromResources;
 	        if (this.settings == null)
 	        {
 		        Debug.LogError("Unable to load icon downloader settings!");
@@ -103,7 +103,7 @@ namespace IconDownloader.Editor
 		        ? "Download As Preview"
 		        : "Download";
 
-	        var canDownload = !downloadAsPreview || this.settings.enableDownloadingAsPreview;
+	        var canDownload = !downloadAsPreview || this.settings.EnableDownloadingAsPreview;
 	        if (canDownload && GUILayout.Button(buttonText))
 	        {
 		        var desiredSizeDownloads = this.iconPreview

@@ -13,7 +13,7 @@ namespace IconDownloader.Editor.Extensions
 		private Image image;
 		private string searchTerm;
 		private IconDownloadFlow iconDownloadFlow;
-		private IconDownloaderSettings settings;
+		private IIconDownloaderSettings settings;
 		
 		private SerialDisposable iconDownloadDisposable;
 
@@ -31,11 +31,7 @@ namespace IconDownloader.Editor.Extensions
 				this.iconDownloadFlow = new IconDownloadFlow(new IconDownloadEditorUI());
 			}
 
-			if (this.settings == null)
-			{
-				this.settings = Resources.Load<IconDownloaderSettings>(nameof(IconDownloaderSettings));
-			}
-
+			this.settings = IconDownloaderSettings.FromResources;
 			this.iconDownloadDisposable = new SerialDisposable();
 		}
 
@@ -63,7 +59,15 @@ namespace IconDownloader.Editor.Extensions
 				this.iconDownloadDisposable.Disposable = this.iconDownloadFlow
 					.DownloadWithSelection(this.searchTerm, count: 100)
 					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
-					.Select(iconData => AssetDatabase.LoadAssetAtPath<Sprite>(iconData.AssetPath))
+					.Select(iconData =>
+					{
+						// Make sure to import texture as Sprite
+						var iconTextureImporter = (TextureImporter) AssetImporter.GetAtPath(iconData.AssetPath);
+						iconTextureImporter.textureType = TextureImporterType.Sprite;
+						iconTextureImporter.SaveAndReimport();
+						
+						return AssetDatabase.LoadAssetAtPath<Sprite>(iconData.AssetPath);
+					})
 					.Subscribe(sprite => this.image.sprite = sprite);
 			}
 			

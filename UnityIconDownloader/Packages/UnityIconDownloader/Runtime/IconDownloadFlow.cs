@@ -12,14 +12,14 @@ namespace IconDownloader
 	public class IconDownloadFlow
 	{
 		private readonly IIconDownloadUI iconDownloadUi;
-		private readonly IconDownloaderSettings settings;
+		private readonly IIconDownloaderSettings settings;
 		private readonly IReadOnlyList<IIconAPI> iconApis;
 
 		public IconDownloadFlow(IIconDownloadUI iconDownloadUI)
 		{
 			this.iconDownloadUi = iconDownloadUI;
 			
-			this.settings = Resources.Load<IconDownloaderSettings>(nameof(IconDownloaderSettings));
+			this.settings = IconDownloaderSettings.FromResources;
 			if (this.settings == null)
 			{
 				Debug.LogError("Create a settings asset first!");
@@ -43,7 +43,7 @@ namespace IconDownloader
 				.ContinueWith(iconPreview => iconPreview
 					.LoadPreviewTexture()
 					.Select(_ => iconPreview)
-					.ShowDownloadOptionsUI(this.iconDownloadUi, this.settings.defaultSaveFolder)
+					.ShowDownloadOptionsUI(this.iconDownloadUi, this.settings.DefaultSaveFolder)
 					.DoOnCompleted(iconPreview.Dispose));
 		}
 
@@ -63,7 +63,7 @@ namespace IconDownloader
 					return result.Type switch
 					{
 						IconSelectionResult.ResultType.IconSelected => Observable.Return(result.SelectedIcon)
-							.ShowDownloadOptionsUI(this.iconDownloadUi, this.settings.defaultSaveFolder),
+							.ShowDownloadOptionsUI(this.iconDownloadUi, this.settings.DefaultSaveFolder),
 						IconSelectionResult.ResultType.SearchRefreshed => this.DownloadWithSelection(
 							result.SearchTerm,
 							count,

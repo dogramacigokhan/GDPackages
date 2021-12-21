@@ -12,7 +12,7 @@ namespace IconDownloader.Editor
 
 		private SerialDisposable downloadDisposable;
 		private IconDownloadFlow iconDownloadFlow;
-		private IconDownloaderSettings settings;
+		private IIconDownloaderSettings settings;
 
 		private string searchTerm;
 		private Texture2D iconTexture;
@@ -25,7 +25,7 @@ namespace IconDownloader.Editor
 		{
 			this.downloadDisposable = new SerialDisposable();
 			this.iconDownloadFlow = new IconDownloadFlow(new IconDownloadEditorUI());
-			this.settings = Resources.Load<IconDownloaderSettings>(nameof(IconDownloaderSettings));
+			this.settings = IconDownloaderSettings.FromResources;
             this.searchPref = IconSearchPreferences.FromCache;
 		}
 
