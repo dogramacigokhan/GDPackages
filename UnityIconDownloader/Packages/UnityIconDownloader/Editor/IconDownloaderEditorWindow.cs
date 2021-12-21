@@ -1,6 +1,7 @@
 using System;
 using IconDownloader.IconApi;
 using UniRx;
+using UniRx.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,13 +11,12 @@ namespace IconDownloader.Editor
 	{
 		private const int MaxImageSize = 256;
 
-		private readonly SerialDisposable downloadDisposable = new SerialDisposable();
+		private SerialDisposable downloadDisposable;
 		private IconDownloadFlow iconDownloadFlow;
 		private IconDownloaderSettings settings;
 
 		private string searchTerm;
 		private Texture2D iconTexture;
-		private bool searchInProgress;
 		private IconSearchPreferences searchPref;
 
 		[MenuItem("Tools/Icon Downloader/Search", isValidateFunction: false, priority: 1)]
@@ -24,9 +24,15 @@ namespace IconDownloader.Editor
 
 		private void OnEnable()
 		{
+			this.downloadDisposable = new SerialDisposable();
 			this.iconDownloadFlow = new IconDownloadFlow(new IconDownloadEditorUI());
 			this.settings = Resources.Load<IconDownloaderSettings>(nameof(IconDownloaderSettings));
             this.searchPref = IconSearchPreferences.FromCache;
+		}
+
+		private void OnDisable()
+		{
+			this.downloadDisposable.Dispose();
 		}
 
 		public void OnInspectorUpdate()
@@ -36,10 +42,7 @@ namespace IconDownloader.Editor
 
 		private void OnGUI()
 		{
-			GUI.enabled = !this.searchInProgress;
-
 			this.searchTerm = EditorGUILayout.TextField("Search Term:", this.searchTerm);
-
 			this.searchPref.PremiumType = (IconPremiumType)EditorGUILayout.EnumPopup("Premium", this.searchPref.PremiumType);
 			this.searchPref.StrokeType = (IconStrokeType)EditorGUILayout.EnumPopup("Stroke", this.searchPref.StrokeType);
 			this.searchPref.ColorType = (IconColorType)EditorGUILayout.EnumPopup("Color", this.searchPref.ColorType);
@@ -47,17 +50,22 @@ namespace IconDownloader.Editor
 			EditorGUILayout.BeginHorizontal();
 			if (GUILayout.Button("Download Single Icon"))
 			{
-				this.downloadDisposable.Disposable = this.SetSearchInProgress(this.iconDownloadFlow
-						.DownloadSingleIcon(this.searchTerm, this.searchPref))
+				this.downloadDisposable.Disposable = null;
+				this.downloadDisposable.Disposable = this.iconDownloadFlow
+					.DownloadSingleIcon(this.searchTerm, this.searchPref)
+					.Debug("DownloadSingleIcon")
 					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
+					.Debug("ImportToProject")
 					.SelectMany(icon => ObservableWebRequest.GetTexture(icon.IconData.PreviewUrl))
+					.Debug("GetTexture")
 					.Subscribe(this.HandleDownloadResult, HandleDownloadError);
 			}
 
 			if (GUILayout.Button("Download With Selection"))
 			{
-				this.downloadDisposable.Disposable = this.SetSearchInProgress(this.iconDownloadFlow
-						.DownloadWithSelection(this.searchTerm, count: 100, this.searchPref))
+				this.downloadDisposable.Disposable = null;
+				this.downloadDisposable.Disposable = this.iconDownloadFlow
+					.DownloadWithSelection(this.searchTerm, count: 100, this.searchPref)
 					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
 					.SelectMany(icon => ObservableWebRequest.GetTexture(icon.IconData.PreviewUrl))
 					.Subscribe(this.HandleDownloadResult, HandleDownloadError);
@@ -75,14 +83,6 @@ namespace IconDownloader.Editor
 		private static void HandleDownloadError(Exception error)
 		{
 			Debug.LogError(error);
-		}
-
-		private IObservable<IconDownloadOptions> SetSearchInProgress(IObservable<IconDownloadOptions> downloadObservable)
-		{
-			return downloadObservable
-				.DoOnSubscribe(() => this.searchInProgress = true)
-				.DoOnCancel(() => this.searchInProgress = false)
-				.DoOnTerminate(() => this.searchInProgress = false);
 		}
 
 		private void HandleDownloadResult(Texture2D downloadedTexture)

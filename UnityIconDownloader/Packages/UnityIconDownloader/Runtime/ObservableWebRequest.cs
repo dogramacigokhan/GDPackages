@@ -11,7 +11,8 @@ namespace IconDownloader
 {
     public static class ObservableWebRequest
     {
-        public static IObservable<T> GetObject<T>(
+
+        public static IObservable<string> GetString(
             string url,
             Dictionary<string, string> headers = null)
         {
@@ -19,7 +20,14 @@ namespace IconDownloader
                     url,
                     UnityWebRequest.Get,
                     headers)
-                .Select(request => request.downloadHandler.text)
+                .Select(request => request.downloadHandler.text);
+        }
+
+        public static IObservable<T> GetObject<T>(
+            string url,
+            Dictionary<string, string> headers = null)
+        {
+            return GetString(url, headers)
                 .Select(JsonConvert.DeserializeObject<T>);
         }
 
@@ -56,55 +64,75 @@ namespace IconDownloader
             Func<string, UnityWebRequest> webRequestFunc,
             Dictionary<string, string> headers = null)
         {
-            var request = webRequestFunc(url);
-            if (headers != null)
+            return Observable.Create<UnityWebRequest>(observer =>
             {
-                foreach (var header in headers)
+                var request = webRequestFunc(url);
+                var requestDisposable = new SingleAssignmentDisposable();
+                
+                if (headers != null)
                 {
-                    request.SetRequestHeader(header.Key, header.Value);
-                }
-            }
-
-            // Set default header to accept json
-            request.SetRequestHeader("Content-Type", "application/json");
-            request.SetRequestHeader("Accept", "application/json");
-
-            IObservable<UnityWebRequest> HandleResult()
-            {
-                if (request.result != UnityWebRequest.Result.Success)
-                {
-                    return Observable.Throw<UnityWebRequest>(new WebException(request.error));
+                    foreach (var header in headers)
+                    {
+                        request.SetRequestHeader(header.Key, header.Value);
+                    }
                 }
 
-                if (request.responseCode != (long)HttpStatusCode.OK)
+                // Set default header to accept json
+                request.SetRequestHeader("Content-Type", "application/json");
+                request.SetRequestHeader("Accept", "application/json");
+
+                IObservable<UnityWebRequest> HandleResult()
                 {
-                    return Observable.Throw<UnityWebRequest>(
-                        new WebException($"{request.responseCode} - {request.downloadHandler.text}"));
+                    if (requestDisposable.IsDisposed)
+                    {
+                        return Observable.Throw<UnityWebRequest>(
+                            new OperationCanceledException("Already disposed."));
+                    }
+                    
+                    if (request.result != UnityWebRequest.Result.Success)
+                    {
+                        return Observable.Throw<UnityWebRequest>(new WebException(request.error));
+                    }
+
+                    if (request.responseCode != (long)HttpStatusCode.OK)
+                    {
+                        return Observable.Throw<UnityWebRequest>(
+                            new WebException($"{request.responseCode} - {request.downloadHandler.text}"));
+                    }
+
+                    return Observable.Return(request);
                 }
 
-                return Observable.Return(request);
-            }
 
+                var observableRequest = request
+                    .SendWebRequest()
+                    .AsObservable();
 
-            var observableRequest = request
-                .SendWebRequest()
-                .AsObservable();
+                if (!Application.isPlaying)
+                {
+                    // Observable web request is not waiting for their underlying request's completion in Editor.
+                    // So we are continuing with a timer until it's completed.
+                    observableRequest = observableRequest
+                        .ContinueWith(operation => Observable
+                            .Interval(TimeSpan.FromSeconds(0.1))
+                            .SkipWhile(_ => !request.isDone)
+                            .Select(_ => operation)
+                            .Take(1));
+                }
 
-            if (!Application.isPlaying)
-            {
-                // Observable web request is not waiting for their underlying request's completion in Editor.
-                // So we are continuing with a timer until it's completed.
-                observableRequest = observableRequest
-                    .ContinueWith(operation => Observable
-                        .Interval(TimeSpan.FromSeconds(0.1))
-                        .SkipWhile(_ => !request.isDone)
-                        .Select(_ => operation)
-                        .Take(1));
+                requestDisposable.Disposable = observableRequest
+                    .ContinueWith(_ => HandleResult())
+                    .CatchIgnore((OperationCanceledException _) => observer.OnCompleted())
+                    .Subscribe(result =>
+                    {
+                        observer.OnNext(result);
+                        observer.OnCompleted();
+                    });
 
-            }
-
-            return observableRequest
-                .ContinueWith(_ => HandleResult());
+                return new CompositeDisposable(
+                    request,
+                    requestDisposable);
+            });
         }
     }
 }

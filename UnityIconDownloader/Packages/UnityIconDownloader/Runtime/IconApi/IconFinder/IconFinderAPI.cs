@@ -58,73 +58,67 @@ namespace IconDownloader.IconApi.IconFinder
 				.CatchIgnore((Exception error) => Debug.LogWarning($"IconFinder search failed: {error}"))
 				.SelectMany(searchResponse => searchResponse
 					.Icons
-					.Select(icon => this.DownloadAsPreview(searchTerm, icon)))
+					.Select(icon => this.GetIconPreview(searchTerm, icon)))
 				.Merge();
 		}
 
-		private IObservable<IconPreview> DownloadAsPreview(string searchTerm, Icon icon)
+		private IObservable<IconPreview> GetIconPreview(string searchTerm, Icon icon)
 		{
-			return Observable.Defer(() =>
-			{
-				var formatsBySize = icon
-					.RasterSizes
-					.Select(rasterSize => (rasterSize.Size, format: rasterSize.Formats.FirstOrDefault(f => f.Format == DesiredIconFormat)))
-					.Where(pair => pair.format != null)
-					.OrderBy(pair => pair.Size)
-					.ToDictionary(pair => pair.Size, pair => pair.format);
+			 var formatsBySize = icon
+				 .RasterSizes
+				 .Select(rasterSize => (rasterSize.Size, format: rasterSize.Formats.FirstOrDefault(f => f.Format == DesiredIconFormat)))
+				 .Where(pair => pair.format != null)
+				 .OrderBy(pair => pair.Size)
+				 .ToDictionary(pair => pair.Size, pair => pair.format);
 
-				var previewUrl = formatsBySize.Last().Value.PreviewUrl;
-				var texturesBySize = formatsBySize
-					.ToDictionary(
-						pair => pair.Key,
-						pair => ObservableWebRequest.GetTexture(
-							pair.Value.DownloadUrl,
-							this.AuthenticationHeaders));
+			 var previewUrl = formatsBySize.Last().Value.PreviewUrl;
+			 var texturesBySize = formatsBySize
+				 .ToDictionary(
+					  pair => pair.Key,
+					  pair => ObservableWebRequest.GetTexture(
+						  pair.Value.DownloadUrl,
+						  this.AuthenticationHeaders));
 
-				var iconDetailsUrl = $"https://api.iconfinder.com/v4/icons/{icon.IconId}";
-				var iconDataObservable = ObservableWebRequest
-					.GetObject<IconDetails>(iconDetailsUrl, this.AuthenticationHeaders)
-					.Select(iconDetails =>
-					{
-						var author =
-							iconDetails.Iconset?.Author?.Company
-							?? iconDetails.Iconset?.Author?.Name
-							?? string.Empty;
+			 var iconDetailsUrl = $"https://api.iconfinder.com/v4/icons/{icon.IconId}";
+			 var iconDataObservable = ObservableWebRequest
+				 .GetObject<IconDetails>(iconDetailsUrl, this.AuthenticationHeaders)
+				 .Select(iconDetails =>
+				 {
+					  var author =
+						  iconDetails.Iconset?.Author?.Company
+						  ?? iconDetails.Iconset?.Author?.Name
+						  ?? string.Empty;
 
-						var authorWebsiteFallback = !string.IsNullOrEmpty(iconDetails.Iconset?.Author?.Username)
-							? $"https://www.iconfinder.com/{iconDetails.Iconset.Author.Username}"
-							: string.Empty;
+					  var authorWebsiteFallback = !string.IsNullOrEmpty(iconDetails.Iconset?.Author?.Username)
+						  ? $"https://www.iconfinder.com/{iconDetails.Iconset.Author.Username}"
+						  : string.Empty;
 
-						var authorWebsite =
-							iconDetails.Iconset?.WebsiteUrl
-							?? authorWebsiteFallback;
+					  var authorWebsite =
+						  iconDetails.Iconset?.WebsiteUrl
+						  ?? authorWebsiteFallback;
 
-						return new IconData(
-							iconId: iconDetails.IconId.ToString(),
-							iconName: $"{searchTerm.Replace(' ', '-')}",
-							isPremium: iconDetails.IsPremium,
-							iconFormat: DesiredIconFormat,
-							licenseName: iconDetails.Iconset?.License?.Name ?? string.Empty,
-							licenseUrl: iconDetails.Iconset?.License?.Url ?? string.Empty,
-							author: author,
-							authorWebsite: authorWebsite,
-							iconApi: IconApiType.IconFinder,
-							iconApiWebsite: "https://www.iconfinder.com/",
-							iconUrl: $"https://www.iconfinder.com/icons/{iconDetails.IconId}",
-							previewUrl: previewUrl);
-					});
+					  return new IconData(
+						  iconId: iconDetails.IconId.ToString(),
+						  iconName: $"{searchTerm.Replace(' ', '-')}",
+						  isPremium: iconDetails.IsPremium,
+						  iconFormat: DesiredIconFormat,
+						  licenseName: iconDetails.Iconset?.License?.Name ?? string.Empty,
+						  licenseUrl: iconDetails.Iconset?.License?.Url ?? string.Empty,
+						  author: author,
+						  authorWebsite: authorWebsite,
+						  iconApi: IconApiType.IconFinder,
+						  iconApiWebsite: "https://www.iconfinder.com/",
+						  iconUrl: $"https://www.iconfinder.com/icons/{iconDetails.IconId}",
+						  previewUrl: previewUrl);
+				 });
 
-				return ObservableWebRequest
-					.GetTexture(previewUrl)
-					.CatchIgnore((Exception error) => Debug.LogWarning($"IconFinder downloading preview failed: {error}"))
-					.Select(previewTexture => new IconPreview(
-						source: IconApiType.IconFinder,
-						iconId: icon.IconId.ToString(),
-						isPremium: icon.IsPremium,
-						previewTextureUrl: previewUrl,
-						iconDataObservable,
-						texturesBySize));
-			});
+			 return Observable.Return(new IconPreview(
+				 source: IconApiType.IconFinder,
+				 iconId: icon.IconId.ToString(),
+				 isPremium: icon.IsPremium,
+				 previewTextureUrl: previewUrl,
+				 iconDataObservable,
+				 texturesBySize));
 		}
 	}
 }
