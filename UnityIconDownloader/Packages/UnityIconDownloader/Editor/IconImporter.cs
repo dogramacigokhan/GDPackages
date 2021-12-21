@@ -62,8 +62,18 @@ namespace IconDownloader.Editor
 					File.WriteAllBytes(
 						targetPath,
 						GetTextureBytes(iconData.IconFormat, texture));
-
+					
 					AssetDatabase.Refresh();
+
+					// Convert the absolute path to a relative path starting from "Assets/"
+					var assetPath = Path.Combine(
+						"Assets",
+						targetPath.Split(new[] { "Assets" }, StringSplitOptions.None)[1].Substring(1));
+					
+					// Make sure to import texture as Sprite
+					var iconTextureImporter = (TextureImporter) AssetImporter.GetAtPath(assetPath);
+					iconTextureImporter.textureType = TextureImporterType.Sprite;
+					iconTextureImporter.SaveAndReimport();
 					
 					var importedIcon = new IconData(
 						iconData.IconId,
@@ -85,12 +95,6 @@ namespace IconDownloader.Editor
 					}
 					
 					AssetDatabase.Refresh();
-					
-					// Convert the absolute path to a relative path starting from "Assets/"
-					var assetPath = Path.Combine(
-						"Assets",
-						targetPath.Split(new[] { "Assets" }, StringSplitOptions.None)[1].Substring(1));
-					
 					return new ImportedIconData(importedIcon, assetPath);
 				});
 		}
