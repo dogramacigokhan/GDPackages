@@ -1,7 +1,6 @@
 using System;
 using IconDownloader.IconApi;
 using UniRx;
-using UniRx.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 
@@ -53,11 +52,8 @@ namespace IconDownloader.Editor
 				this.downloadDisposable.Disposable = null;
 				this.downloadDisposable.Disposable = this.iconDownloadFlow
 					.DownloadSingleIcon(this.searchTerm, this.searchPref)
-					.Debug("DownloadSingleIcon")
 					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
-					.Debug("ImportToProject")
 					.SelectMany(icon => ObservableWebRequest.GetTexture(icon.IconData.PreviewUrl))
-					.Debug("GetTexture")
 					.Subscribe(this.HandleDownloadResult, HandleDownloadError);
 			}
 
