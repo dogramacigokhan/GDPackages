@@ -185,7 +185,7 @@ namespace IconDownloader.Editor
 			// Integrations
 			EditorGUILayout.LabelField("Integrations", EditorStyles.boldLabel);
 			this.showOnImageEditor.boolValue = EditorGUILayout.ToggleLeft(
-				"Show On Images",
+				"Image Component",
 				this.showOnImageEditor.boolValue);
 			
 			EditorGUILayout.Space(5);
