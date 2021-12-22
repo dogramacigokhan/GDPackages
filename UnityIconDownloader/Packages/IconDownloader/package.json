@@ -1,9 +1,9 @@
 {
-    "name": "com.gdpackages.unity-icon-downloader",
-    "displayName": "Unity Icon Downloader",
+    "name": "com.gdpackages.icon-downloader",
+    "displayName": "Icon Downloader",
     "version": "1.0.0",
     "unity": "2021.1",
-    "description": "Tool to download icons into your Unity project easily.",
+    "description": "Search and download icons into your Unity project easily.",
     "author": {
         "name": "Gokhan Dogramaci",
         "email": "dogramacigokhan@gmail.com",
@@ -11,12 +11,15 @@
     },
     "keywords": [
         "icon",
-        "download",
+        "icons",
         "find",
+        "finder",
+        "download",
+        "downloader",
         "texture",
         "sprite",
-        "game",
-        "prototype"
+        "prototype",
+        "game"
     ],
     "category": "Unity"
 }

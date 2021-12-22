@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "com.gdpackages.unity-icon-downloader": {
-      "version": "file:UnityIconDownloader",
+    "com.gdpackages.icon-downloader": {
+      "version": "file:IconDownloader",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
