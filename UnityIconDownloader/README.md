@@ -24,13 +24,13 @@ This package provides icon search and download functionalities to easily find an
 In order to import the package to your game, you can employ one of these methods.
 
 ### Using Git URL (Recommended)
-If you want the latest version of the package without needing to update it manually, you can open the Package Manager, choose “Add package from git URL…” and use `https://github.com/dogramacigokhan/GDPackages.git?path=UnityIconDownloader/Packages/UnityIconDownloader` as the target.
+If you want the latest version of the package without needing to update it manually, you can open the Package Manager, choose “Add package from git URL…” and use `https://github.com/dogramacigokhan/GDPackages.git?path=UnityIconDownloader/Packages/IconDownloader` as the target.
 
 ### Using embedded package
-You can download this repository, copy the `UnityIconDownloader` package from `UnityIconDownloader/Packages` into your `[GameFolder]/Packages` folder.
+You can download this repository, copy the `IconDownloader` package from `UnityIconDownloader/Packages` into your `[GameFolder]/Packages` folder.
 
 ### Using local package
-You can download this repository, open the Package Manager and choose “Add package from disk…”, and select `[Repository]/Packages/UnityIconDownloader/package.json` as the target.
+You can download this repository, open the Package Manager and choose “Add package from disk…”, and select `[Repository]/Packages/IconDownloader/package.json` as the target.
 
 ## Dependencies
 
