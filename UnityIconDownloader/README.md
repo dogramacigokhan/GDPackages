@@ -34,7 +34,7 @@ You can download this repository, open the Package Manager and choose “Add pac
 
 ## Dependencies
 
-Regardless of the option you choose, don't forget to add these dependencies to your game.
+Regardless of the importing option you choose, don't forget to add these dependencies to your game.
 
 ### UniRx Dependency
 
