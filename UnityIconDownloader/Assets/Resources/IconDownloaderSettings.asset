@@ -17,5 +17,6 @@ MonoBehaviour:
   enableDownloadingAsPreview: 1
   downloadLicenseData: 1
   showOnImageEditor: 1
+  showOnRawImageEditor: 1
   enabledApis: 0000000001000000
   serializedApiKeys: []
