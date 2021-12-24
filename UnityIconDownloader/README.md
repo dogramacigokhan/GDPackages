@@ -9,7 +9,7 @@ This package provides icon search and download functionalities to easily find an
 * Generating combined license info for all downloaded icons, so it can be easily copy pasted into the credits screen.
 * Image & RawImage integrations to easily search, download and assign icons.
 * Filtering search result depending on premium type, color type, stroke type etc.
-* Supporting multiple icon APIs. Currently it supports IconFinder and FlatIcon APIs.
+* Supporting multiple icon APIs. Currently it supports [IconFinder](https://www.iconfinder.com/) and [FlatIcon](https://www.flaticon.com/) APIs.
 
 ## What this tool does not provide?
 * Searching for icon sets.
