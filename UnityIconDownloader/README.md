@@ -1,7 +1,7 @@
 # Icon Downloader
 This package provides icon search and download functionalities to easily find and import icons into your Unity projects either for prototyping or actual development purposes.
 
-## What this tool provides?
+## What does this tool provide?
 * Searching and downloading icons in runtime (Play Mode).
 * Searching and downloading icons in editor (Edit Mode) with ready-to-use editor windows.
 * Selecting desired icon size(s) before downloading them.
@@ -11,7 +11,7 @@ This package provides icon search and download functionalities to easily find an
 * Filtering search result depending on premium type, color type, stroke type etc.
 * Supporting multiple icon APIs. Currently it supports [IconFinder](https://www.iconfinder.com/) and [FlatIcon](https://www.flaticon.com/) APIs.
 
-## What this tool does not provide?
+## What does this tool not provide?
 * Searching for icon sets.
 * Showing similar icons for the selected icons.
 * Changing colors of the icons.
