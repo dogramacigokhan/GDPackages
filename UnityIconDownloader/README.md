@@ -45,3 +45,9 @@ To import UniRx into the project, you can open the Package Manager and choose â€
 ### Json.NET Dependency
 
 Json string parsing is done using the Newtonsoft.Json package. If you are [using Unity 2018.4 or above you can add the package into manifest.json](https://forum.unity.com/threads/newtonsoft-json-package.843220/#post-5941664) if it's not there already. Otherwise, you need to [download the package](https://github.com/JamesNK/Newtonsoft.Json/releases) and import the library into your project.
+
+## Installation
+
+1. Go to `Tools/Icon Downloader/Settings` menu to create initial settings asset. Keep this file under the `Assets/Resources` folder.
+2. From the settings, enable desired APIs by entering the API keys and set desired options.
+3. Use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
