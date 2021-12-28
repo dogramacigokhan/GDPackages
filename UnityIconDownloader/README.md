@@ -17,7 +17,7 @@ This package provides icon search and download functionalities to easily find an
 * Changing colors of the icons.
 
 ## Future roadmap
-* Pagination support for the icon selection menu.
+* Pagination support for the icon selection editor window.
 * Choosing a background color for icon selection editor window.
 * More API integrations.
 
