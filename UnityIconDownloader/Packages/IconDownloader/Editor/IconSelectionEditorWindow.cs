@@ -56,7 +56,8 @@ namespace IconDownloader.Editor
 
         private void OnDisable()
         {
-            this.iconSearchPreferences.Cache();
+            this.iconSearchPreferences?.Cache();
+            this.iconSearchPreferences = null;
             this.searchDisposable.Dispose();
         }
 
@@ -70,6 +71,11 @@ namespace IconDownloader.Editor
 
         private void OnGUI()
         {
+            if (this.iconSearchPreferences == null)
+            {
+                return;
+            }
+            
             EditorGUILayout.Space(7);
             EditorGUILayout.BeginHorizontal();
             
