@@ -4,10 +4,11 @@ This package provides icon search and download functionalities to easily find an
 ## Table of Contents
 1. [What does this tool provide?](#what-does-this-tool-provide)
 2. [What does this tool not provide?](#what-does-this-tool-not-provide)
-3. [Importing the package to your game](#importing-the-package-to-your-game)
-4. [Dependencies](#dependencies)
-5. [Installation](#installation)
-6. [Future roadmap](#future-roadmap)
+3. [Installation](#installation)
+4. [Importing the package to your game](#importing-the-package-to-your-game)
+5. [Adding dependencies](#adding-dependencies)
+6. [Seting up the tool](#setting-up-the-tool)
+7. [Future roadmap](#future-roadmap)
 
 ## What does this tool provide?
 * Searching and downloading icons in runtime (Play Mode).
@@ -24,37 +25,49 @@ This package provides icon search and download functionalities to easily find an
 * Showing similar icons for the selected icons.
 * Changing colors of the icons.
 
-## Importing the package to your game
+## Installation
+
+Follow these steps to install the package:
+
+### Importing the package to your game
 In order to import the package to your game, you can employ one of these methods.
 
-### Using Git URL (Recommended)
-If you want the latest version of the package without needing to update it manually, you can open the Package Manager, choose “Add package from git URL…” and use `https://github.com/dogramacigokhan/GDPackages.git?path=UnityIconDownloader/Packages/IconDownloader` as the target.
+#### Using Git URL (Recommended)
+If you want the latest version of the package without needing to update it manually, you can open the Package Manager, choose “Add package from git URL…” and use this as the target:
+```
+https://github.com/dogramacigokhan/GDPackages.git?path=UnityIconDownloader/Packages/IconDownloader#iconDownloader_v2.0.0
+```
 
-### Using embedded package
+#### Using embedded package
 You can download this repository, copy the `IconDownloader` package from `UnityIconDownloader/Packages` into your `[GameFolder]/Packages` folder.
 
-### Using local package
+#### Using local package
 You can download this repository, open the Package Manager and choose “Add package from disk…”, and select `[Repository]/Packages/IconDownloader/package.json` as the target.
 
-## Dependencies
+### Adding Dependencies
 
 Regardless of the importing option you choose, don't forget to add these dependencies to your game.
 
-### UniRx Dependency
+#### UniRx Dependency
 
 There are a lot of `UnityWebRequests` usages in this package and they are done in the Edit mode. `UnityWebRequest` relies on coroutines but since the coroutines are a bit tricky to use in Edit mode and [they are a bit problematic](https://www.gokhandogramaci.com/2018/02/05/problems-with-unity3d-coroutines/) in general, UniRx – Reactive Extensions for Unity is used to make these requests.
 
-To import UniRx into the project, you can open the Package Manager and choose “Add package from git URL…” and use `https://github.com/dogramacigokhan/UniRx.git?path=Assets/Plugins/UniRx/Scripts` as the target.
+To import UniRx into the project, you can open the Package Manager and choose “Add package from git URL…” and use this as the target:
+```
+https://github.com/dogramacigokhan/UniRx.git?path=Assets/Plugins/UniRx/Scripts
+```
 
-### Json.NET Dependency
+#### Json.NET Dependency
 
-Json string parsing is done using the Newtonsoft.Json package. If you are [using Unity 2018.4 or above you can add the package into manifest.json](https://forum.unity.com/threads/newtonsoft-json-package.843220/#post-5941664) if it's not there already. Otherwise, you need to [download the package](https://github.com/JamesNK/Newtonsoft.Json/releases) and import the library into your project.
+Json string parsing is done using the Newtonsoft.Json package. If you are [using Unity 2018.4 or above you can add the package into manifest.json](https://forum.unity.com/threads/newtonsoft-json-package.843220/#post-5941664), but it should be there already.
 
-## Installation
+If you are using a lower Unity version, you need to [download the package](https://github.com/JamesNK/Newtonsoft.Json/releases) and import the library into your project.
+
+### Setting up the tool
 
 1. Go to `Tools/Icon Downloader/Settings` menu to create initial settings asset. Keep this file under the `Assets/Resources` folder.
 2. From the settings, enable desired APIs by entering the API keys and set desired options.
-3. Use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
+3. After downloading the icons, use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
 
 ## Future roadmap
 * Pagination support for the icon selection editor window.
