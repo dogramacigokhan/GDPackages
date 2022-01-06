@@ -3,7 +3,7 @@ using IconDownloader.IconApi;
 
 namespace IconDownloader
 {
-	public interface IIconDownloadUI
+	public interface IIconDownloadFlowUI
 	{
 		IObservable<IconSelectionResult> ShowIconSelection(
 			IObservable<IconPreview> iconSource,
