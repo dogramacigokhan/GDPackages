@@ -1,0 +1,61 @@
+using System;
+using UniRx;
+using UnityEditor;
+using UnityEngine;
+
+namespace IconDownloader.Editor
+{
+	public class IconDownloadEditorFlow
+	{
+		private static readonly IconDownloadFlow DownloadFlow = new IconDownloadFlow(new IconDownloadEditorFlowUI());
+
+		public static IObservable<ImportedIconData> DownloadSingle(
+			string searchTerm,
+			IconSearchPreferences searchPref = null)
+		{
+			return DownloadFlow
+				.DownloadSingleIcon(searchTerm, searchPref)
+				.SelectMany(iconData =>
+					IconImporter.ImportToProject(iconData, IconDownloaderSettings.FromResources));
+		}
+
+		public static IObservable<ImportedIconData> DownloadWithSelection(
+			string searchTerm,
+			int count,
+			IconSearchPreferences searchPref = null)
+		{
+			return DownloadFlow
+				.DownloadWithSelection(searchTerm, count, searchPref)
+				.SelectMany(iconData =>
+					IconImporter.ImportToProject(iconData, IconDownloaderSettings.FromResources));
+		}
+
+		public static IObservable<Texture2D> DownloadAsTextureWithSelection(
+			string searchTerm,
+			int count,
+			IconSearchPreferences searchPref = null)
+		{
+			return DownloadWithSelection(searchTerm, count, searchPref)
+				.Select(iconData => AssetDatabase.LoadAssetAtPath<Texture2D>(iconData.AssetPath));
+		}
+
+		public static IObservable<Sprite> DownloadAsSpriteWithSelection(
+			string searchTerm,
+			int count,
+			IconSearchPreferences searchPref = null)
+		{
+			return DownloadWithSelection(searchTerm, count, searchPref)
+				.Select(iconData =>
+				{
+					var iconTextureImporter = (TextureImporter) AssetImporter.GetAtPath(iconData.AssetPath);
+					if (iconTextureImporter.textureType != TextureImporterType.Sprite)
+					{
+						iconTextureImporter.textureType = TextureImporterType.Sprite;
+						iconTextureImporter.SaveAndReimport();
+					}
+
+					return AssetDatabase.LoadAssetAtPath<Sprite>(iconData.AssetPath);
+				});
+		}
+	}
+}

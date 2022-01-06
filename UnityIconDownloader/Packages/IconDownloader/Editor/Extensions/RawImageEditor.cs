@@ -11,7 +11,6 @@ namespace IconDownloader.Editor.Extensions
 	{
 		private RawImage image;
 		private string searchTerm;
-		private IconDownloadFlow iconDownloadFlow;
 		private IIconDownloaderSettings settings;
 		
 		private SerialDisposable iconDownloadDisposable;
@@ -25,7 +24,6 @@ namespace IconDownloader.Editor.Extensions
 		{
 			base.OnEnable();
 
-			this.iconDownloadFlow = EditModeIconDownloader.Instance;
 			this.settings = IconDownloaderSettings.FromResources;
 			this.iconDownloadDisposable = new SerialDisposable();
 		}
@@ -51,10 +49,8 @@ namespace IconDownloader.Editor.Extensions
 			this.searchTerm = EditorGUILayout.TextField("Search Icon", this.searchTerm);
 			if (GUILayout.Button("Find"))
 			{
-				this.iconDownloadDisposable.Disposable = this.iconDownloadFlow
-					.DownloadWithSelection(this.searchTerm, count: 100)
-					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
-					.Select(iconData => AssetDatabase.LoadAssetAtPath<Texture2D>(iconData.AssetPath))
+				this.iconDownloadDisposable.Disposable = IconDownloadEditorFlow
+					.DownloadAsTextureWithSelection(this.searchTerm, count: 100)
 					.Subscribe(texture => this.image.texture = texture);
 			}
 			
