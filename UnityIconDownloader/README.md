@@ -1,6 +1,8 @@
 # Icon Downloader
 This package provides icon search and download functionalities to easily find and import icons into your Unity projects either for prototyping or actual development purposes.
 
+![IconDownloader](https://user-images.githubusercontent.com/3823941/148414185-e50478f6-37bc-45c1-be32-3fb26778ad0d.gif)
+
 ## Table of Contents
 1. [What does this tool provide?](#what-does-this-tool-provide)
 2. [What does this tool not provide?](#what-does-this-tool-not-provide)
