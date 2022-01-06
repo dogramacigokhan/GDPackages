@@ -65,12 +65,18 @@ If you are using a lower Unity version, you need to [download the package](https
 
 ### Setting up the tool
 
-Go to `Tools/Icon Downloader/Settings` menu to create initial settings asset. Keep this file under the `Assets/Resources` folder.
+Go to `Tools/Icon Downloader/Settings` menu to create initial settings asset. Keep this file under the `Assets/Resources` folder. Some fields of the settings asset are explained below.
 
-<img src="https://user-images.githubusercontent.com/3823941/148419467-544f3366-d082-42be-a968-7e155368db07.png" height="250" />
+#### API Selection
+Enable desired APIs and set API keys. You can use "Get API Key" button to open related API pages.
 
-From the settings, enable desired APIs by entering the API keys and set desired options.
-After downloading the icons, use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
+<img src="https://user-images.githubusercontent.com/3823941/148419467-544f3366-d082-42be-a968-7e155368db07.png" height="250"/>
+
+#### License Data
+Make sure to enable "Download License Data" option to be able to generate license info for the downloaded icons.
+
+### Generating License Info
+You can use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
 
 ## Future roadmap
 * Pagination support for the icon selection editor window.
