@@ -8,5 +8,5 @@ This package provides icon search and download functionalities to easily find an
 
 ### Versions
 
-* [v2.0.0 (Alpha)](https://github.com/dogramacigokhan/GDPackages/tree/iconDownloader_v2/UnityIconDownloader)
+* [v2.x.x (Latest)](https://github.com/dogramacigokhan/GDPackages/tree/iconDownloader_v2/UnityIconDownloader)
 * [v1.0.0](https://github.com/dogramacigokhan/GDPackages/tree/master/UnityIconDownloader)
