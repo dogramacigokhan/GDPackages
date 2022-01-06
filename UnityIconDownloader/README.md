@@ -1,6 +1,8 @@
 # Icon Downloader
 This package provides icon search and download functionalities to easily find and import icons into your Unity projects either for prototyping or actual development purposes.
 
+**IMPORTANT** This is the legacy v1.0.0 version. Considering using the [latest version of this package](https://github.com/dogramacigokhan/GDPackages/tree/iconDownloader_v2/UnityIconDownloader).
+
 ## What does this tool provide?
 * Searching and downloading icons in runtime (Play Mode).
 * Searching and downloading icons in editor (Edit Mode) with ready-to-use editor windows.
