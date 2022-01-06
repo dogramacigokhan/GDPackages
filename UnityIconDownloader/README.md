@@ -67,6 +67,8 @@ If you are using a lower Unity version, you need to [download the package](https
 
 Go to `Tools/Icon Downloader/Settings` menu to create initial settings asset. Keep this file under the `Assets/Resources` folder.
 
+<img src="https://user-images.githubusercontent.com/3823941/148419467-544f3366-d082-42be-a968-7e155368db07.png" height="250" />
+
 From the settings, enable desired APIs by entering the API keys and set desired options.
 After downloading the icons, use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
 
