@@ -73,10 +73,13 @@ Enable desired APIs and set API keys. You can use "Get API Key" button to open r
 <img src="https://user-images.githubusercontent.com/3823941/148419467-544f3366-d082-42be-a968-7e155368db07.png" height="250"/>
 
 #### License Data
-Make sure to enable "Download License Data" option to be able to generate license info for the downloaded icons.
+Enable "Download License Data" option to download additional info alongside with the icons. These files will contain not only licenses information, but other useful information that you might need (e.g. icon source, icon id, etc.). To be able to generate license info for the downloaded icons, make sure to enable this option.
 
 ### Generating License Info
 You can use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
+
+<img src="https://user-images.githubusercontent.com/3823941/148421355-2bb0c9cb-09a4-46e8-b820-57f4d214fc22.png" height="300" />
+
 
 ## Future roadmap
 * Pagination support for the icon selection editor window.
