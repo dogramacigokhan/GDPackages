@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IconDownloader.Editor.Layout;
 using IconDownloader.IconApi;
 using UniRx;
 using UnityEditor;
@@ -103,7 +104,7 @@ namespace IconDownloader.Editor
             EditorGuiLayoutHelpers.DrawHorizontalLine();
             this.scrollPos = EditorGUILayout.BeginScrollView(this.scrollPos);
 
-            var grid = new EditorGrid(columnCount: 7, rowSpacing: 20, columnSpacing: 15);
+            var grid = new EditorGridLayout(columnCount: 7, rowSpacing: 20, columnSpacing: 15);
             foreach (var iconPreview in this.iconPreviews)
             {
                 grid.AddElement(() =>

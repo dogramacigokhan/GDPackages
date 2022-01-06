@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using IconDownloader.Editor.Layout;
 using IconDownloader.IconApi;
 using UnityEditor;
 using UnityEngine;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IconDownloader.Editor.Layout;
 using IconDownloader.IconApi;
 using UniRx;
 using UnityEditor;
@@ -85,7 +86,7 @@ namespace IconDownloader.Editor
 
 		        // Size selection
 		        EditorGuiLayoutHelpers.DrawCenteredLabel("Select Sizes");
-		        var grid = new EditorGrid(columnCount: 4);
+		        var grid = new EditorGridLayout(columnCount: 4);
 		        foreach (var downloadPair in this.iconPreview.TexturesBySize)
 		        {
 			        grid.AddElement(() => this.downloadSizeStatus[downloadPair.Key] = EditorGUILayout.ToggleLeft(

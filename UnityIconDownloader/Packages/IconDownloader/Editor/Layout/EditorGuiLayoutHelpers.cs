@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace IconDownloader.Editor
+namespace IconDownloader.Editor.Layout
 {
 	public static class EditorGuiLayoutHelpers
 	{

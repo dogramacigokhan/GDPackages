@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace IconDownloader.Editor
+namespace IconDownloader.Editor.Layout
 {
-	internal class EditorGrid
+	internal class EditorGridLayout
 	{
 		private readonly int columnCount;
 		private readonly int rowSpacing;
 		private readonly int columnSpacing;
 		private readonly Queue<Action> drawElementActions;
 
-		public EditorGrid(
+		public EditorGridLayout(
 			int columnCount,
 			int rowSpacing = 5,
 			int columnSpacing = 5)
