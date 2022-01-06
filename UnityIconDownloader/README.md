@@ -1,6 +1,14 @@
 # Icon Downloader
 This package provides icon search and download functionalities to easily find and import icons into your Unity projects either for prototyping or actual development purposes.
 
+## Table of Contents
+1. [What does this tool provide?](#what-does-this-tool-provide)
+2. [What does this tool not provide?](#what-does-this-tool-not-provide)
+3. [Importing the package to your game](#importing-the-package-to-your-game)
+4. [Dependencies](#dependencies)
+5. [Installation](#installation)
+6. [Future roadmap](#future-roadmap)
+
 ## What does this tool provide?
 * Searching and downloading icons in runtime (Play Mode).
 * Searching and downloading icons in editor (Edit Mode) with ready-to-use editor windows.
@@ -15,11 +23,6 @@ This package provides icon search and download functionalities to easily find an
 * Searching for icon sets.
 * Showing similar icons for the selected icons.
 * Changing colors of the icons.
-
-## Future roadmap
-* Pagination support for the icon selection editor window.
-* Choosing a background color for icon selection editor window.
-* More API integrations.
 
 ## Importing the package to your game
 In order to import the package to your game, you can employ one of these methods.
@@ -52,3 +55,8 @@ Json string parsing is done using the Newtonsoft.Json package. If you are [using
 1. Go to `Tools/Icon Downloader/Settings` menu to create initial settings asset. Keep this file under the `Assets/Resources` folder.
 2. From the settings, enable desired APIs by entering the API keys and set desired options.
 3. Use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
+
+## Future roadmap
+* Pagination support for the icon selection editor window.
+* Choosing a background color for icon selection editor window.
+* More API integrations.
