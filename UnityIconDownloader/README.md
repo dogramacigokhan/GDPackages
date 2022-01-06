@@ -20,7 +20,20 @@ It does **not** provide:
 
 ## Table of Contents
 1. [Installation](#installation)
+   1. [Importing the package to your game](#importing-the-package-to-your-game)
+      1. [Using Git URL (Recommended)](#using-git-url-recommended)
+      2. [Using embedded package](#using-embedded-package)
+      3. [Using local package](#using-local-package)
+   2. [Adding Dependencies](#adding-dependencies)
+      1. [UniRx Dependency](#unirx-dependency)
+      2. [Json.NET Dependency](#jsonnet-dependency)
+   3. [Setting up the tool](#setting-up-the-tool)
+      1. [API Selection](#api-selection)
+      2. [License Data](#license-data)
+   4. [Generating License Info](#generating-license-info)
 2. [Using the tool](#using-the-tool)
+   1. [Searching and downloading icons in Edit Mode](#searching-and-downloading-icons-in-edit-mode)
+   2. [Searching and downloading icons in Play Mode](#searching-and-downloading-icons-in-play-mode)
 3. [Future roadmap](#future-roadmap)
 
 ## Installation
@@ -80,7 +93,7 @@ You can use `Tools/Icon Downloader/Generate License Info` menu to generate licen
 
 ## Using the tool
 
-### Searching and downloading icons in Editor (Edit Mode)
+### Searching and downloading icons in Edit Mode
 `IconDownloadEditorFlow` (static) class can be used to initiate icon downloads in edit mode. Following methods are available with ready-to-use editor UIs:
 
 | Method                         | Description                                                                                                                             |
@@ -90,7 +103,7 @@ You can use `Tools/Icon Downloader/Generate License Info` menu to generate licen
 | DownloadAsTextureWithSelection | Searches and lists found icons in an icon selection window. After the icon is downloaded, imports it as texture and returns the result. |
 | DownloadAsSpriteWithSelection  | Searches and lists found icons in an icon selection window. After the icon is downloaded, imports it as sprite and returns the result.  |
 
-### Searching and downloading icons in runtime (Play Mode)
+### Searching and downloading icons in Play Mode
 `IconDownloadFlow` class can be used to initiate icon downloads in play mode.
 1. Create a class that implements `IIconDownloadFlowUI` and implement the interface methods.
 2. Provide the instance of the class to `IconDownloadFlow` constructor.
