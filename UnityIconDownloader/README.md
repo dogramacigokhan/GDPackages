@@ -80,6 +80,28 @@ You can use `Tools/Icon Downloader/Generate License Info` menu to generate licen
 
 <img src="https://user-images.githubusercontent.com/3823941/148421355-2bb0c9cb-09a4-46e8-b820-57f4d214fc22.png" height="300" />
 
+## Using the tool
+
+### Searching and downloading icons in Editor (Edit Mode)
+`IconDownloadEditorFlow` (static) class can be used to initiate icon downloads in edit mode. Following methods are available with ready-to-use editor UIs:
+
+| Method                         | Description                                                                                                                             |
+|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| DownloadSingle                 | Searches and downloads the first found icon.                                                                                            |
+| DownloadWithSelection          | Searches and lists found icons in an icon selection window.                                                                             |
+| DownloadAsTextureWithSelection | Searches and lists found icons in an icon selection window. After the icon is downloaded, imports it as texture and returns the result. |
+| DownloadAsSpriteWithSelection  | Searches and lists found icons in an icon selection window. After the icon is downloaded, imports it as sprite and returns the result.  |
+
+### Searching and downloading icons in runtime (Play Mode)
+`IconDownloadFlow` class can be used to initiate icon downloads in play mode.
+1. Create a class that implements `IIconDownloadFlowUI` and implement the interface methods.
+2. Provide the instance of the class to `IconDownloadFlow` constructor.
+3. Use following methods to initiate the download:
+
+| Method                | Description                                                 |
+|-----------------------|-------------------------------------------------------------|
+| DownloadSingleIcon    | Searches and downloads the first found icon.                |
+| DownloadWithSelection | Searches and lists found icons in an icon selection window. |
 
 ## Future roadmap
 * Pagination support for the icon selection editor window.

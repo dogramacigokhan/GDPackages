@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace IconDownloader.Editor
 {
-	public class IconDownloadEditorFlow
+	public static class IconDownloadEditorFlow
 	{
 		private static readonly IconDownloadFlow DownloadFlow = new IconDownloadFlow(new IconDownloadEditorFlowUI());
 
