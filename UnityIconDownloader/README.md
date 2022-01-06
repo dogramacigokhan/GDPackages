@@ -20,10 +20,8 @@ It does **not** provide:
 
 ## Table of Contents
 1. [Installation](#installation)
-2. [Importing the package to your game](#importing-the-package-to-your-game)
-3. [Adding dependencies](#adding-dependencies)
-4. [Seting up the tool](#setting-up-the-tool)
-5. [Future roadmap](#future-roadmap)
+2. [Using the tool](#using-the-tool)
+3. [Future roadmap](#future-roadmap)
 
 ## Installation
 
