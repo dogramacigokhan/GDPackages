@@ -3,16 +3,7 @@ This package provides icon search and download functionalities to easily find an
 
 ![IconDownloader](https://user-images.githubusercontent.com/3823941/148414185-e50478f6-37bc-45c1-be32-3fb26778ad0d.gif)
 
-## Table of Contents
-1. [What does this tool provide?](#what-does-this-tool-provide)
-2. [What does this tool not provide?](#what-does-this-tool-not-provide)
-3. [Installation](#installation)
-4. [Importing the package to your game](#importing-the-package-to-your-game)
-5. [Adding dependencies](#adding-dependencies)
-6. [Seting up the tool](#setting-up-the-tool)
-7. [Future roadmap](#future-roadmap)
-
-## What does this tool provide?
+It provides:
 * Searching and downloading icons in runtime (Play Mode).
 * Searching and downloading icons in editor (Edit Mode) with ready-to-use editor windows.
 * Selecting desired icon size(s) before downloading them.
@@ -22,10 +13,17 @@ This package provides icon search and download functionalities to easily find an
 * Filtering search result depending on premium type, color type, stroke type etc.
 * Supporting multiple icon APIs. Currently it supports [IconFinder](https://www.iconfinder.com/) and [FlatIcon](https://www.flaticon.com/) APIs.
 
-## What does this tool not provide?
+It does **not** provide:
 * Searching for icon sets.
 * Showing similar icons for the selected icons.
 * Changing colors of the icons.
+
+## Table of Contents
+1. [Installation](#installation)
+2. [Importing the package to your game](#importing-the-package-to-your-game)
+3. [Adding dependencies](#adding-dependencies)
+4. [Seting up the tool](#setting-up-the-tool)
+5. [Future roadmap](#future-roadmap)
 
 ## Installation
 
@@ -67,9 +65,10 @@ If you are using a lower Unity version, you need to [download the package](https
 
 ### Setting up the tool
 
-1. Go to `Tools/Icon Downloader/Settings` menu to create initial settings asset. Keep this file under the `Assets/Resources` folder.
-2. From the settings, enable desired APIs by entering the API keys and set desired options.
-3. After downloading the icons, use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
+Go to `Tools/Icon Downloader/Settings` menu to create initial settings asset. Keep this file under the `Assets/Resources` folder.
+
+From the settings, enable desired APIs by entering the API keys and set desired options.
+After downloading the icons, use `Tools/Icon Downloader/Generate License Info` menu to generate license information for all downloaded icons.
 
 ## Future roadmap
 * Pagination support for the icon selection editor window.
