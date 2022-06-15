@@ -46,7 +46,7 @@ In order to import the package to your game, you can employ one of these methods
 #### Using Git URL (Recommended)
 If you want the latest version of the package without needing to update it manually, you can open the Package Manager, choose “Add package from git URL…” and use this as the target:
 ```
-https://github.com/dogramacigokhan/GDPackages.git?path=UnityIconDownloader/Packages/IconDownloader#iconDownloader_v2
+https://github.com/dogramacigokhan/GDPackages.git?path=UnityIconDownloader/Packages/IconDownloader
 ```
 
 #### Using embedded package
