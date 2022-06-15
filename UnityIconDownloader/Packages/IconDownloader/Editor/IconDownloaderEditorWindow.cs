@@ -1,4 +1,5 @@
 using System;
+using IconDownloader.Editor.Layout;
 using IconDownloader.IconApi;
 using UniRx;
 using UnityEditor;
@@ -11,7 +12,6 @@ namespace IconDownloader.Editor
 		private const int MaxImageSize = 256;
 
 		private SerialDisposable downloadDisposable;
-		private IconDownloadFlow iconDownloadFlow;
 		private IIconDownloaderSettings settings;
 
 		private string searchTerm;
@@ -24,7 +24,6 @@ namespace IconDownloader.Editor
 		private void OnEnable()
 		{
 			this.downloadDisposable = new SerialDisposable();
-			this.iconDownloadFlow = EditModeIconDownloader.Instance;
 			this.settings = IconDownloaderSettings.FromResources;
             this.searchPref = IconSearchPreferences.FromCache;
 		}
@@ -50,9 +49,8 @@ namespace IconDownloader.Editor
 			if (GUILayout.Button("Download Single Icon"))
 			{
 				this.downloadDisposable.Disposable = null;
-				this.downloadDisposable.Disposable = this.iconDownloadFlow
-					.DownloadSingleIcon(this.searchTerm, this.searchPref)
-					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
+				this.downloadDisposable.Disposable = IconDownloadEditorFlow
+					.DownloadSingle(this.searchTerm, this.searchPref)
 					.SelectMany(icon => ObservableWebRequest.GetTexture(icon.IconData.PreviewUrl))
 					.Subscribe(this.HandleDownloadResult, HandleDownloadError);
 			}
@@ -60,9 +58,8 @@ namespace IconDownloader.Editor
 			if (GUILayout.Button("Download With Selection"))
 			{
 				this.downloadDisposable.Disposable = null;
-				this.downloadDisposable.Disposable = this.iconDownloadFlow
+				this.downloadDisposable.Disposable = IconDownloadEditorFlow
 					.DownloadWithSelection(this.searchTerm, count: 100, this.searchPref)
-					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
 					.SelectMany(icon => ObservableWebRequest.GetTexture(icon.IconData.PreviewUrl))
 					.Subscribe(this.HandleDownloadResult, HandleDownloadError);
 			}

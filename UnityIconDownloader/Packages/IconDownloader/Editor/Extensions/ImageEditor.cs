@@ -11,7 +11,6 @@ namespace IconDownloader.Editor.Extensions
 	{
 		private Image image;
 		private string searchTerm;
-		private IconDownloadFlow iconDownloadFlow;
 		private IIconDownloaderSettings settings;
 		
 		private SerialDisposable iconDownloadDisposable;
@@ -25,7 +24,6 @@ namespace IconDownloader.Editor.Extensions
 		{
 			base.OnEnable();
 
-			this.iconDownloadFlow = EditModeIconDownloader.Instance;
 			this.settings = IconDownloaderSettings.FromResources;
 			this.iconDownloadDisposable = new SerialDisposable();
 		}
@@ -51,18 +49,8 @@ namespace IconDownloader.Editor.Extensions
 			this.searchTerm = EditorGUILayout.TextField("Search Icon", this.searchTerm);
 			if (GUILayout.Button("Find"))
 			{
-				this.iconDownloadDisposable.Disposable = this.iconDownloadFlow
-					.DownloadWithSelection(this.searchTerm, count: 100)
-					.SelectMany(iconData => IconImporter.ImportToProject(iconData, this.settings))
-					.Select(iconData =>
-					{
-						// Make sure to import texture as Sprite
-						var iconTextureImporter = (TextureImporter) AssetImporter.GetAtPath(iconData.AssetPath);
-						iconTextureImporter.textureType = TextureImporterType.Sprite;
-						iconTextureImporter.SaveAndReimport();
-						
-						return AssetDatabase.LoadAssetAtPath<Sprite>(iconData.AssetPath);
-					})
+				this.iconDownloadDisposable.Disposable = IconDownloadEditorFlow
+					.DownloadAsSpriteWithSelection(this.searchTerm, count: 100)
 					.Subscribe(sprite => this.image.sprite = sprite);
 			}
 			

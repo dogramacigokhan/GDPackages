@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace IconDownloader.Editor
 {
-	public class IconDownloadEditorUI : IIconDownloadUI
+	public class IconDownloadEditorFlowUI : IIconDownloadFlowUI
 	{
 		public IObservable<IconSelectionResult> ShowIconSelection(
 			IObservable<IconPreview> iconSource,

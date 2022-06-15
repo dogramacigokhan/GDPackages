@@ -7,19 +7,19 @@ namespace IconDownloader
 	{
 		public static IObservable<IconSelectionResult> ShowIconSelectionUI(
 			this IObservable<IconPreview> iconSource,
-			IIconDownloadUI iconDownloadUI,
+			IIconDownloadFlowUI iconDownloadFlowUI,
 			string searchTerm,
 			IconSearchPreferences searchPreferences)
 		{
-			return iconDownloadUI.ShowIconSelection(iconSource, searchTerm, searchPreferences);
+			return iconDownloadFlowUI.ShowIconSelection(iconSource, searchTerm, searchPreferences);
 		}
 
 		public static IObservable<IconDownloadOptions> ShowDownloadOptionsUI(
 			this IObservable<IconPreview> iconSource,
-			IIconDownloadUI iconDownloadUI,
+			IIconDownloadFlowUI iconDownloadFlowUI,
 			string defaultSavePath)
 		{
-			return iconDownloadUI.ShowDownloadOptions(iconSource, defaultSavePath);
+			return iconDownloadFlowUI.ShowDownloadOptions(iconSource, defaultSavePath);
 		}
 	}
 }

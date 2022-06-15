@@ -11,15 +11,15 @@ namespace IconDownloader
 {
 	public class IconDownloadFlow
 	{
-		private readonly IIconDownloadUI iconDownloadUi;
+		private readonly IIconDownloadFlowUI iconDownloadFlowUI;
 		private readonly IIconDownloaderSettings settings;
 		private readonly IReadOnlyList<IIconAPI> iconApis;
 
-		public IconDownloadFlow(IIconDownloadUI iconDownloadUI)
+		public IconDownloadFlow(IIconDownloadFlowUI iconDownloadFlowUI)
 		{
-			this.iconDownloadUi = iconDownloadUI;
+			this.iconDownloadFlowUI = iconDownloadFlowUI;
 			this.settings = IconDownloaderSettings.FromResources;
-			
+
 			if (this.settings == null)
 			{
 				Debug.LogError("Create a settings asset first!");
@@ -34,16 +34,18 @@ namespace IconDownloader
 
 		public IObservable<IconDownloadOptions> DownloadSingleIcon(
 			string searchTerm,
-			IconSearchPreferences searchPreferences)
+			IconSearchPreferences searchPreferences = null)
 		{
+			var iconSearchPreferences = searchPreferences ?? IconSearchPreferences.FromCache;
+
 			return this.iconApis
-				.Select(iconApi => iconApi.SearchIcons(searchTerm, searchPreferences, count: 1))
+				.Select(iconApi => iconApi.SearchIcons(searchTerm, iconSearchPreferences, count: 1))
 				.Merge()
 				.Take(1)
 				.ContinueWith(iconPreview => iconPreview
 					.LoadPreviewTexture()
 					.Select(_ => iconPreview)
-					.ShowDownloadOptionsUI(this.iconDownloadUi, this.settings.DefaultSaveFolder)
+					.ShowDownloadOptionsUI(this.iconDownloadFlowUI, this.settings.DefaultSaveFolder)
 					.DoOnCompleted(iconPreview.Dispose));
 		}
 
@@ -57,13 +59,13 @@ namespace IconDownloader
 			return this.iconApis
 				.Select(iconApi => iconApi.SearchIcons(searchTerm, iconSearchPreferences, count))
 				.Merge()
-				.ShowIconSelectionUI(this.iconDownloadUi, searchTerm, iconSearchPreferences)
+				.ShowIconSelectionUI(this.iconDownloadFlowUI, searchTerm, iconSearchPreferences)
 				.SelectMany(result =>
 				{
 					return result.Type switch
 					{
 						IconSelectionResult.ResultType.IconSelected => Observable.Return(result.SelectedIcon)
-							.ShowDownloadOptionsUI(this.iconDownloadUi, this.settings.DefaultSaveFolder),
+							.ShowDownloadOptionsUI(this.iconDownloadFlowUI, this.settings.DefaultSaveFolder),
 						IconSelectionResult.ResultType.SearchRefreshed => this.DownloadWithSelection(
 							result.SearchTerm,
 							count,
