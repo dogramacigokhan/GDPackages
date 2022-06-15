@@ -14,7 +14,7 @@ namespace IconDownloader.Editor
 
         private readonly SerialDisposable iconPreviewDisposable = new SerialDisposable();
         private List<IconPreview> iconPreviews = new List<IconPreview>();
-        
+
         private string searchTerm;
         private IconSearchPreferences iconSearchPreferences;
 
@@ -26,7 +26,7 @@ namespace IconDownloader.Editor
 
         public IObservable<IconSelectionResult> SetIconSource(
             IObservable<IconPreview> iconPreview,
-            string searchTerm, 
+            string searchTerm,
             IconSearchPreferences searchPreferences)
         {
             this.iconPreviews = new List<IconPreview>();
@@ -37,7 +37,7 @@ namespace IconDownloader.Editor
                 .DoOnCancel(() => this.downloadInProgress = false)
                 .DoOnTerminate(() => this.downloadInProgress = false)
                 .Subscribe(preview => this.iconPreviews.Add(preview));
-            
+
             this.searchTerm = searchTerm;
             this.iconSearchPreferences = searchPreferences ?? IconSearchPreferences.FromCache;
 
@@ -76,22 +76,22 @@ namespace IconDownloader.Editor
             {
                 return;
             }
-            
+
             EditorGUILayout.Space(7);
             EditorGUILayout.BeginHorizontal();
-            
+
             GUILayout.Label("Search Term:");
 			this.searchTerm = EditorGUILayout.TextField(this.searchTerm);
-            
+
             GUILayout.Label("Premium:");
 			this.iconSearchPreferences.PremiumType = (IconPremiumType)EditorGUILayout.EnumPopup(this.iconSearchPreferences.PremiumType);
-            
+
             GUILayout.Label("Stroke:");
 			this.iconSearchPreferences.StrokeType = (IconStrokeType)EditorGUILayout.EnumPopup(this.iconSearchPreferences.StrokeType);
-			
+
             GUILayout.Label("Color:");
             this.iconSearchPreferences.ColorType = (IconColorType)EditorGUILayout.EnumPopup(this.iconSearchPreferences.ColorType);
-            
+
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(3);
 

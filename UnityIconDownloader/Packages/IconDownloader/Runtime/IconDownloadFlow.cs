@@ -19,7 +19,7 @@ namespace IconDownloader
 		{
 			this.iconDownloadFlowUI = iconDownloadFlowUI;
 			this.settings = IconDownloaderSettings.FromResources;
-			
+
 			if (this.settings == null)
 			{
 				Debug.LogError("Create a settings asset first!");
@@ -37,7 +37,7 @@ namespace IconDownloader
 			IconSearchPreferences searchPreferences = null)
 		{
 			var iconSearchPreferences = searchPreferences ?? IconSearchPreferences.FromCache;
-			
+
 			return this.iconApis
 				.Select(iconApi => iconApi.SearchIcons(searchTerm, iconSearchPreferences, count: 1))
 				.Merge()
