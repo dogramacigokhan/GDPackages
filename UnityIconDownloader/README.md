@@ -65,7 +65,7 @@ There are a lot of `UnityWebRequests` usages in this package and they are done i
 
 To import UniRx into the project, you can open the Package Manager and choose “Add package from git URL…” and use this as the target:
 ```
-https://github.com/dogramacigokhan/UniRx.git?path=Assets/Plugins/UniRx/Scripts
+https://github.com/dogramacigokhan/UniRx.git?path=Assets/Plugins/UniRx/Scripts#gdfixes
 ```
 
 #### Json.NET Dependency
