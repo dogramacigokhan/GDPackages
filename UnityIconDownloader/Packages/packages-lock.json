@@ -7,11 +7,11 @@
       "dependencies": {}
     },
     "com.neuecc.unirx": {
-      "version": "https://github.com/dogramacigokhan/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
+      "version": "https://github.com/dogramacigokhan/UniRx.git?path=Assets/Plugins/UniRx/Scripts#gdfixes",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "1317e180c32336a40294a2a02b2488b94862f9b1"
+      "hash": "f7148db29b89bd8436bbc52570a65c51a0f2908d"
     },
     "com.unity.2d.animation": {
       "version": "7.0.5",
@@ -114,6 +114,13 @@
       "dependencies": {
         "com.unity.services.core": "1.0.1"
       },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.editorcoroutines": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ext.nunit": {

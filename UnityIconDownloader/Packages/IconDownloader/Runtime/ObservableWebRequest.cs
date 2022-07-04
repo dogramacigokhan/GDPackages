@@ -68,7 +68,7 @@ namespace IconDownloader
             {
                 var request = webRequestFunc(url);
                 var requestDisposable = new SingleAssignmentDisposable();
-                
+
                 if (headers != null)
                 {
                     foreach (var header in headers)
@@ -88,7 +88,7 @@ namespace IconDownloader
                         return Observable.Throw<UnityWebRequest>(
                             new OperationCanceledException("Already disposed."));
                     }
-                    
+
                     if (request.result != UnityWebRequest.Result.Success)
                     {
                         return Observable.Throw<UnityWebRequest>(new WebException(request.error));
@@ -104,23 +104,9 @@ namespace IconDownloader
                 }
 
 
-                var observableRequest = request
+                requestDisposable.Disposable = request
                     .SendWebRequest()
-                    .AsObservable();
-
-                if (!Application.isPlaying)
-                {
-                    // Observable web request is not waiting for their underlying request's completion in Editor.
-                    // So we are continuing with a timer until it's completed.
-                    observableRequest = observableRequest
-                        .ContinueWith(operation => Observable
-                            .Interval(TimeSpan.FromSeconds(0.1))
-                            .SkipWhile(_ => !request.isDone)
-                            .Select(_ => operation)
-                            .Take(1));
-                }
-
-                requestDisposable.Disposable = observableRequest
+                    .AsObservable()
                     .ContinueWith(_ => HandleResult())
                     .CatchIgnore((OperationCanceledException _) => observer.OnCompleted())
                     .Subscribe(result =>
