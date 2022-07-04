@@ -10,6 +10,7 @@ namespace IconDownloader.IconApi.FlatIcon
 {
 	internal class FlatIconAPI : IIconAPI
 	{
+		private const string BaseApiUrl = "https://api.flaticon.com/v3";
 		private const string DesiredIconFormat = "png";
 
 		private static long CurrentTimestamp => ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
@@ -39,7 +40,7 @@ namespace IconDownloader.IconApi.FlatIcon
 				.SerializeObject(new { apikey = this.settings.GetApiKey(IconApiType.FlatIcon) });
 
 			return ObservableWebRequest.PostObject<FlatIconAuthenticationResponse>(
-					"https://api.flaticon.com/v2/app/authentication",
+					$"{BaseApiUrl}/app/authentication",
 					authenticationData)
 				.Select(response =>
 				{
@@ -80,7 +81,7 @@ namespace IconDownloader.IconApi.FlatIcon
 			var limit = count == 1 ? 2 : count;
 
 			var query = $"q={encodedSearchTerm}{strokeFilter}{colorFilter}&limit={limit}";
-			var searchUrl = $"https://api.flaticon.com/v2/search/icons/priority?{query}";
+			var searchUrl = $"{BaseApiUrl}/search/icons/priority?{query}";
 
 			return this.GetAuthenticationToken()
 				.ContinueWith(token => ObservableWebRequest.GetObject<FlatIconSearchResponse>(
@@ -93,11 +94,12 @@ namespace IconDownloader.IconApi.FlatIcon
 					{
 						// Premium option is not available in the query,
 						// so we are filtering out the response.
+						bool IsPremium() => iconData.Images.Any(i => i.PreviewUrl.Contains("/premium/"));
 						return searchPreferences.PremiumType switch
 						{
 							IconPremiumType.All => true,
-							IconPremiumType.Free => iconData.Premium == 0,
-							IconPremiumType.Premium => iconData.Premium == 1,
+							IconPremiumType.Free => !IsPremium(),
+							IconPremiumType.Premium => IsPremium(),
 							_ => throw new ArgumentOutOfRangeException(nameof(searchPreferences.PremiumType), searchPreferences.PremiumType, null),
 						};
 					})
@@ -113,7 +115,7 @@ namespace IconDownloader.IconApi.FlatIcon
 				 .PreviewUrl;
 
 			 var texturesBySize = new[] { 16, 24, 32, 64, 128, 256, 512 }
-				 .Select(size => (size, url: $"https://api.flaticon.com/v2/item/icon/download/{iconData.Id}?size={size}"))
+				 .Select(size => (size, url: $"{BaseApiUrl}/item/icon/download/{iconData.Id}?size={size}"))
 				 .ToDictionary(
 					  pair => pair.size,
 					  pair => this.GetAuthenticationToken()
@@ -122,27 +124,29 @@ namespace IconDownloader.IconApi.FlatIcon
 			 var rawIconName = !string.IsNullOrEmpty(iconData.Description)
 				 ? iconData.Description
 				 : searchTerm;
-			 
+
 			 // Unfortunately there's no endpoint to get license details.
 			 // But currently, "2" means free-to-use.
-			 var licenseInfo = iconData.License == "2"
-				 ? "Free"
-				 : iconData.License;
+			 var isPremium = previewUrl.Contains("/premium/");
+			 var licenseInfo = isPremium ? "Premium*" : $"Free*";
+			 licenseInfo += $" (Check https://www.flaticon.com/license/icon/{iconData.Id})";
+
+			 var urlSuffix = $"{iconData.Description.ToLowerInvariant().Trim().Replace(' ', '-')}_{iconData.Id}";
 
 			 var icon = new IconData(
 				 iconId: iconData.Id.ToString(),
 				 iconName: $"{rawIconName.Replace(' ', '-')}",
-				 isPremium: iconData.Premium == 1,
+				 isPremium: isPremium,
 				 iconFormat: DesiredIconFormat,
 				 licenseName: licenseInfo,
 				 licenseUrl: $"https://www.flaticon.com/license/icon/{iconData.Id}",
-				 author: iconData.DesignerName ?? string.Empty,
-				 authorWebsite: iconData.DesignerWebsite ?? string.Empty,
+				 author: iconData.TeamName ?? string.Empty,
+				 authorWebsite: string.Empty,
 				 iconApi: IconApiType.FlatIcon,
 				 iconApiWebsite: "https://www.flaticon.com/",
-				 iconUrl: $"https://www.flaticon.com/{iconData.Slug}",
+				 iconUrl: $"https://www.flaticon.com/free-icon/{urlSuffix}",
 				 previewUrl);
-			 
+
 			 return Observable.Return(new IconPreview(
 				 source: IconApiType.FlatIcon,
 				 iconId: icon.IconId,

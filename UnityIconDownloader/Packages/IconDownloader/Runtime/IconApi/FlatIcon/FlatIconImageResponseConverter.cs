@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -26,18 +25,21 @@ namespace IconDownloader.IconApi.FlatIcon
 			JsonSerializer serializer)
 		{
 			var jObject = JObject.Load(reader);
-			var formats = new[] { "png", "svg" };
+			var list = new List<FlatIconImage>();
 
-			return formats
-				.Where(format => jObject.ContainsKey(format))
-				.SelectMany(format => ((IEnumerable<KeyValuePair<string, JToken>>)jObject[format])
-					.Select(kv => new FlatIconImage
+			foreach (var pair in jObject)
+			{
+				if (int.TryParse(pair.Key, out var size))
+				{
+					list.Add(new FlatIconImage
 					{
-						Format = format,
-						Size = int.Parse(kv.Key),
-						PreviewUrl = kv.Value.ToString(),
-					}))
-				.ToList();
+						Size = size,
+						PreviewUrl = pair.Value?.ToString() ?? string.Empty,
+					});
+				}
+			}
+
+			return list;
 		}
 
 		public override bool CanConvert(Type objectType) => true;
