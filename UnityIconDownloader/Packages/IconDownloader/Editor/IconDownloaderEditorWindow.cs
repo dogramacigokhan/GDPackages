@@ -44,6 +44,7 @@ namespace IconDownloader.Editor
 			this.searchPref.PremiumType = (IconPremiumType)EditorGUILayout.EnumPopup("Premium", this.searchPref.PremiumType);
 			this.searchPref.StrokeType = (IconStrokeType)EditorGUILayout.EnumPopup("Stroke", this.searchPref.StrokeType);
 			this.searchPref.ColorType = (IconColorType)EditorGUILayout.EnumPopup("Color", this.searchPref.ColorType);
+			this.searchPref.Limit = EditorGUILayout.IntField("Limit", this.searchPref.Limit);
 
 			EditorGUILayout.BeginHorizontal();
 			if (GUILayout.Button("Download Single Icon"))
@@ -59,7 +60,7 @@ namespace IconDownloader.Editor
 			{
 				this.downloadDisposable.Disposable = null;
 				this.downloadDisposable.Disposable = IconDownloadEditorFlow
-					.DownloadWithSelection(this.searchTerm, count: 100, this.searchPref)
+					.DownloadWithSelection(this.searchTerm, this.searchPref)
 					.SelectMany(icon => ObservableWebRequest.GetTexture(icon.IconData.PreviewUrl))
 					.Subscribe(this.HandleDownloadResult, HandleDownloadError);
 			}

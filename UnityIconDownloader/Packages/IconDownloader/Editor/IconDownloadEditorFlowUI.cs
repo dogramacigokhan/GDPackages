@@ -10,11 +10,12 @@ namespace IconDownloader.Editor
 		public IObservable<IconSelectionResult> ShowIconSelection(
 			IObservable<IconPreview> iconSource,
 			string searchTerm,
-			IconSearchPreferences searchPreferences)
+			IconSearchPreferences searchPreferences,
+			bool clearPreviousResult)
 		{
 			return EditorWindow
 				.GetWindow<IconSelectionEditorWindow>()
-				.SetIconSource(iconSource, searchTerm, searchPreferences);
+				.SetIconSource(iconSource, searchTerm, searchPreferences, clearPreviousResult);
 		}
 
 		public IObservable<IconDownloadOptions> ShowDownloadOptions(

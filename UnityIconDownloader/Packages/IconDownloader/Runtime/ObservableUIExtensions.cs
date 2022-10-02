@@ -9,9 +9,10 @@ namespace IconDownloader
 			this IObservable<IconPreview> iconSource,
 			IIconDownloadFlowUI iconDownloadFlowUI,
 			string searchTerm,
-			IconSearchPreferences searchPreferences)
+			IconSearchPreferences searchPreferences,
+			bool clearPreviousResult)
 		{
-			return iconDownloadFlowUI.ShowIconSelection(iconSource, searchTerm, searchPreferences);
+			return iconDownloadFlowUI.ShowIconSelection(iconSource, searchTerm, searchPreferences, clearPreviousResult);
 		}
 
 		public static IObservable<IconDownloadOptions> ShowDownloadOptionsUI(

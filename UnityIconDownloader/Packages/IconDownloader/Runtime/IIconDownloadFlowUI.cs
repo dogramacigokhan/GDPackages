@@ -8,8 +8,9 @@ namespace IconDownloader
 		IObservable<IconSelectionResult> ShowIconSelection(
 			IObservable<IconPreview> iconSource,
 			string searchTerm,
-			IconSearchPreferences searchPreferences);
-		
+			IconSearchPreferences searchPreferences,
+			bool clearPreviousResult);
+
 		IObservable<IconDownloadOptions> ShowDownloadOptions(
 			IObservable<IconPreview> iconSource,
 			string defaultSavePath);

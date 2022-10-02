@@ -6,7 +6,6 @@ namespace IconDownloader.IconApi
 	{
 		IObservable<IconPreview> SearchIcons(
 			string searchTerm,
-			IconSearchPreferences searchPreferences,
-			int count);
+			IconSearchPreferences searchPreferences);
 	}
 }

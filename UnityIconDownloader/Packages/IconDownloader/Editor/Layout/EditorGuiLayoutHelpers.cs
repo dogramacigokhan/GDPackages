@@ -15,7 +15,7 @@ namespace IconDownloader.Editor.Layout
 			{
 				return;
 			}
-			
+
 			GUI.DrawTexture(
 				EditorGUILayout.GetControlRect(false, height, GUILayout.Width(height)),
 				texture,

@@ -12,8 +12,8 @@ namespace IconDownloader.Editor
     {
         private const int ImageSize = 64;
 
-        private readonly SerialDisposable iconPreviewDisposable = new SerialDisposable();
-        private List<IconPreview> iconPreviews = new List<IconPreview>();
+        private readonly SerialDisposable iconPreviewDisposable = new();
+        private List<IconPreview> iconPreviews = new();
 
         private string searchTerm;
         private IconSearchPreferences iconSearchPreferences;
@@ -25,20 +25,24 @@ namespace IconDownloader.Editor
         private SerialDisposable searchDisposable;
 
         public IObservable<IconSelectionResult> SetIconSource(
-            IObservable<IconPreview> iconPreview,
-            string searchTerm,
-            IconSearchPreferences searchPreferences)
+            IObservable<IconPreview> iconPreviewSource,
+            string term,
+            IconSearchPreferences searchPreferences,
+            bool clearPreviousResult)
         {
-            this.iconPreviews = new List<IconPreview>();
+            if (clearPreviousResult)
+            {
+                this.iconPreviews = new List<IconPreview>();
+            }
 
-            this.iconPreviewDisposable.Disposable = iconPreview
+            this.iconPreviewDisposable.Disposable = iconPreviewSource
                 .DoOnSubscribe(() => this.downloadInProgress = true)
                 .SelectMany(preview => preview.LoadPreviewTexture().Select(_ => preview))
                 .DoOnCancel(() => this.downloadInProgress = false)
                 .DoOnTerminate(() => this.downloadInProgress = false)
                 .Subscribe(preview => this.iconPreviews.Add(preview));
 
-            this.searchTerm = searchTerm;
+            this.searchTerm = term;
             this.iconSearchPreferences = searchPreferences ?? IconSearchPreferences.FromCache;
 
             this.Show();
@@ -92,13 +96,22 @@ namespace IconDownloader.Editor
             GUILayout.Label("Color:");
             this.iconSearchPreferences.ColorType = (IconColorType)EditorGUILayout.EnumPopup(this.iconSearchPreferences.ColorType);
 
+            GUILayout.Label("Limit:");
+            this.iconSearchPreferences.Limit = EditorGUILayout.IntField(this.iconSearchPreferences.Limit);
+
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(3);
 
-            if (GUILayout.Button("Refresh"))
+            if (GUILayout.Button("Refresh", GUILayout.Height(24)))
             {
                 this.iconSearchPreferences.Cache();
                 this.selectionResult?.OnNext(IconSelectionResult.SearchRefreshed(this.searchTerm, this.iconSearchPreferences));
+            }
+
+            if (this.downloadInProgress)
+            {
+                EditorGUILayout.Space(3);
+                EditorGuiLayoutHelpers.DrawCenteredLabel("Loading Icons...");
             }
 
             EditorGuiLayoutHelpers.DrawHorizontalLine();
@@ -136,6 +149,19 @@ namespace IconDownloader.Editor
             grid.Draw();
 
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(6);
+
+            if (!this.downloadInProgress)
+            {
+                if (GUILayout.Button("Load More", GUILayout.Height(24)))
+                {
+                    this.selectionResult?.OnNext(IconSelectionResult.RequestedMoreResult(this.searchTerm, this.iconSearchPreferences));
+                }
+
+                EditorGUILayout.Space(6);
+            }
+
             EditorGUILayout.EndScrollView();
         }
 

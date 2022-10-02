@@ -39,7 +39,7 @@ namespace IconDownloader
 			var iconSearchPreferences = searchPreferences ?? IconSearchPreferences.FromCache;
 
 			return this.iconApis
-				.Select(iconApi => iconApi.SearchIcons(searchTerm, iconSearchPreferences, count: 1))
+				.Select(iconApi => iconApi.SearchIcons(searchTerm, iconSearchPreferences))
 				.Merge()
 				.Take(1)
 				.ContinueWith(iconPreview => iconPreview
@@ -51,15 +51,15 @@ namespace IconDownloader
 
 		public IObservable<IconDownloadOptions> DownloadWithSelection(
 			string searchTerm,
-			int count,
-			IconSearchPreferences searchPreferences = null)
+			IconSearchPreferences searchPreferences = null,
+			bool clearPreviousResult = true)
 		{
 			var iconSearchPreferences = searchPreferences ?? IconSearchPreferences.FromCache;
 
 			return this.iconApis
-				.Select(iconApi => iconApi.SearchIcons(searchTerm, iconSearchPreferences, count))
+				.Select(iconApi => iconApi.SearchIcons(searchTerm, iconSearchPreferences))
 				.Merge()
-				.ShowIconSelectionUI(this.iconDownloadFlowUI, searchTerm, iconSearchPreferences)
+				.ShowIconSelectionUI(this.iconDownloadFlowUI, searchTerm, iconSearchPreferences, clearPreviousResult)
 				.SelectMany(result =>
 				{
 					return result.Type switch
@@ -68,8 +68,12 @@ namespace IconDownloader
 							.ShowDownloadOptionsUI(this.iconDownloadFlowUI, this.settings.DefaultSaveFolder),
 						IconSelectionResult.ResultType.SearchRefreshed => this.DownloadWithSelection(
 							result.SearchTerm,
-							count,
-							result.SearchPreferences),
+							result.SearchPreferences,
+							clearPreviousResult: true),
+						IconSelectionResult.ResultType.RequestedMoreResult => this.DownloadWithSelection(
+							result.SearchTerm,
+							result.SearchPreferences,
+							clearPreviousResult: false),
 						_ => throw new ArgumentOutOfRangeException(nameof(result.Type))
 					};
 				});

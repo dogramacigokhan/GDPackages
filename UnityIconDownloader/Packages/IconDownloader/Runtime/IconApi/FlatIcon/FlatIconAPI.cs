@@ -51,8 +51,7 @@ namespace IconDownloader.IconApi.FlatIcon
 
 		public IObservable<IconPreview> SearchIcons(
 			string searchTerm,
-			IconSearchPreferences searchPreferences,
-			int count)
+			IconSearchPreferences searchPreferences)
 		{
 			if (!this.settings.EnabledApis[IconApiType.FlatIcon])
 			{
@@ -76,11 +75,11 @@ namespace IconDownloader.IconApi.FlatIcon
 				_ => throw new ArgumentOutOfRangeException(nameof(searchPreferences.ColorType), searchPreferences.ColorType, null)
 			};
 
-			// In FlatIcon API limit=1 is processed as limit=101 for some reason, but limit=2 works as expected.
-			// That's why we are using limit=2 instead of limit=1 to decrease search request duration.
-			var limit = count == 1 ? 2 : count;
+			var page = searchPreferences.Limit > 0
+				? searchPreferences.Offset / searchPreferences.Limit
+				: 0;
 
-			var query = $"q={encodedSearchTerm}{strokeFilter}{colorFilter}&limit={limit}";
+			var query = $"q={encodedSearchTerm}{strokeFilter}{colorFilter}&limit={searchPreferences.Limit}&page={page}";
 			var searchUrl = $"{BaseApiUrl}/search/icons/priority?{query}";
 
 			return this.GetAuthenticationToken()

@@ -12,7 +12,7 @@ namespace IconDownloader.Editor.Extensions
 		private RawImage image;
 		private string searchTerm;
 		private IIconDownloaderSettings settings;
-		
+
 		private SerialDisposable iconDownloadDisposable;
 
 		private void Awake()
@@ -45,15 +45,15 @@ namespace IconDownloader.Editor.Extensions
 
 			EditorGUILayout.Space(5);
 			EditorGUILayout.BeginHorizontal();
-			
+
 			this.searchTerm = EditorGUILayout.TextField("Search Icon", this.searchTerm);
 			if (GUILayout.Button("Find"))
 			{
 				this.iconDownloadDisposable.Disposable = IconDownloadEditorFlow
-					.DownloadAsTextureWithSelection(this.searchTerm, count: 100)
+					.DownloadAsTextureWithSelection(this.searchTerm)
 					.Subscribe(texture => this.image.texture = texture);
 			}
-			
+
 			EditorGUILayout.EndHorizontal();
 		}
 	}

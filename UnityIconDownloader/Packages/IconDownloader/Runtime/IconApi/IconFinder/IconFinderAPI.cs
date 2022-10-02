@@ -11,7 +11,7 @@ namespace IconDownloader.IconApi.IconFinder
 	{
 		private const string DesiredIconFormat = "png";
 
-		private Dictionary<string,string> AuthenticationHeaders => new Dictionary<string, string>
+		private Dictionary<string,string> AuthenticationHeaders => new()
 		{
 			["Authorization"] = $"Bearer {this.settings.GetApiKey(IconApiType.IconFinder)}",
 		};
@@ -25,8 +25,7 @@ namespace IconDownloader.IconApi.IconFinder
 
 		public IObservable<IconPreview> SearchIcons(
 			string searchTerm,
-			IconSearchPreferences searchPreferences,
-			int count)
+			IconSearchPreferences searchPreferences)
 		{
 			if (!this.settings.EnabledApis[IconApiType.IconFinder])
 			{
@@ -50,7 +49,7 @@ namespace IconDownloader.IconApi.IconFinder
 				_ => throw new ArgumentOutOfRangeException(nameof(searchPreferences.PremiumType), searchPreferences.PremiumType, null)
 			};
 
-			var query = $"query={encodedSearchTerm}{styleFilter}&premium={premiumValue}&count={count}";
+			var query = $"query={encodedSearchTerm}{styleFilter}&premium={premiumValue}&count={searchPreferences.Limit}&offset={searchPreferences.Offset}";
 			var searchUrl = $"https://api.iconfinder.com/v4/icons/search?{query}";
 
 			return ObservableWebRequest

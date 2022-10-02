@@ -9,18 +9,29 @@ namespace IconDownloader
 		public readonly string SearchTerm;
 		public readonly IconSearchPreferences SearchPreferences;
 
-		public static IconSelectionResult IconSelected(IconPreview selectedIcon) => new IconSelectionResult(
-			ResultType.IconSelected,
-			selectedIcon,
-			searchTerm: string.Empty,
-			searchPreferences: null);
+		public static IconSelectionResult IconSelected(IconPreview selectedIcon) =>
+			new(
+				ResultType.IconSelected,
+				selectedIcon,
+				searchTerm: string.Empty,
+				searchPreferences: null);
 
 		public static IconSelectionResult SearchRefreshed(string searchTerm, IconSearchPreferences searchPreferences) =>
-			new IconSelectionResult(
+			new(
 				ResultType.SearchRefreshed,
 				selectedIcon: null,
 				searchTerm,
 				searchPreferences);
+
+		public static IconSelectionResult RequestedMoreResult(string searchTerm, IconSearchPreferences searchPreferences)
+		{
+			searchPreferences.Offset += searchPreferences.Limit;
+			return new IconSelectionResult(
+				ResultType.RequestedMoreResult,
+				selectedIcon: null,
+				searchTerm,
+				searchPreferences);
+		}
 
 		private IconSelectionResult(
 			ResultType type,
@@ -38,6 +49,7 @@ namespace IconDownloader
 		{
 			IconSelected,
 			SearchRefreshed,
+			RequestedMoreResult,
 		}
 	}
 }
