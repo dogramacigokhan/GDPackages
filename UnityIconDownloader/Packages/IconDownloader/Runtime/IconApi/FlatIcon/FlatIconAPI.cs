@@ -76,8 +76,8 @@ namespace IconDownloader.IconApi.FlatIcon
 			};
 
 			var page = searchPreferences.Limit > 0
-				? searchPreferences.Offset / searchPreferences.Limit
-				: 0;
+				? (searchPreferences.Offset / searchPreferences.Limit) + 1
+				: 1;
 
 			var query = $"q={encodedSearchTerm}{strokeFilter}{colorFilter}&limit={searchPreferences.Limit}&page={page}";
 			var searchUrl = $"{BaseApiUrl}/search/icons/priority?{query}";
