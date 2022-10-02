@@ -33,6 +33,8 @@ namespace IconDownloader.Editor.Layout
 			var elementCount = this.drawElementActions.Count;
 			var rowCount = Mathf.CeilToInt((float)elementCount / this.columnCount);
 
+			EditorGUILayout.BeginVertical();
+
 			for (var row = 0; row < rowCount; row++)
 			{
 				EditorGUILayout.BeginHorizontal();
@@ -59,6 +61,8 @@ namespace IconDownloader.Editor.Layout
 					EditorGUILayout.Space(this.rowSpacing);
 				}
 			}
+
+			EditorGUILayout.EndVertical();
 		}
 	}
 }

@@ -63,16 +63,16 @@ namespace IconDownloader.IconApi.FlatIcon
 			var strokeFilter = searchPreferences.StrokeType switch
 			{
 				IconStrokeType.All => string.Empty,
-				IconStrokeType.Filled => "&stroke=1",
-				IconStrokeType.Linear => "&stroke=0",
+				IconStrokeType.Filled => "&styleShape=fill",
+				IconStrokeType.Linear => "&styleShape=outline",
 				_ => throw new ArgumentOutOfRangeException(nameof(searchPreferences.StrokeType), searchPreferences.StrokeType, null)
 			};
 
 			var colorFilter = searchPreferences.ColorType switch
 			{
 				IconColorType.All => string.Empty,
-				IconColorType.Colored => "&color=2",
-				IconColorType.Monocolor => "&color=1",
+				IconColorType.Colored => "&styleColor=color",
+				IconColorType.Monocolor => "&styleColor=black",
 				_ => throw new ArgumentOutOfRangeException(nameof(searchPreferences.ColorType), searchPreferences.ColorType, null)
 			};
 

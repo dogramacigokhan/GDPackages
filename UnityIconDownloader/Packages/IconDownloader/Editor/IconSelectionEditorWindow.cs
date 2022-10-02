@@ -104,7 +104,16 @@ namespace IconDownloader.Editor
             EditorGuiLayoutHelpers.DrawHorizontalLine();
             this.scrollPos = EditorGUILayout.BeginScrollView(this.scrollPos);
 
-            var grid = new EditorGridLayout(columnCount: 7, rowSpacing: 20, columnSpacing: 15);
+            const int nodeWidth = 70;
+            const int columnSpacing = 20;
+            const int padding = 30;
+            var columnCount = Mathf.Max((int)((this.position.width - padding) / (nodeWidth + columnSpacing)), 1);
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Space(10);
+
+            var grid = new EditorGridLayout(columnCount, rowSpacing: 20, columnSpacing);
+
             foreach (var iconPreview in this.iconPreviews)
             {
                 grid.AddElement(() =>
@@ -112,7 +121,7 @@ namespace IconDownloader.Editor
                     EditorGUILayout.BeginVertical();
                     EditorGuiLayoutHelpers.DrawTexture(iconPreview.PreviewTexture.Value, ImageSize);
 
-                    var rect = EditorGUILayout.GetControlRect(false, 24, GUILayout.Width(70));
+                    var rect = EditorGUILayout.GetControlRect(false, 24, GUILayout.Width(nodeWidth));
                     var selectContent = iconPreview.IsPremium
                         ? new GUIContent("Select", this.premiumIcon, "Premium Icon")
                         : new GUIContent("Select");
@@ -126,6 +135,7 @@ namespace IconDownloader.Editor
             }
             grid.Draw();
 
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndScrollView();
         }
 
