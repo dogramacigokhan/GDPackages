@@ -61,7 +61,7 @@ Regardless of the importing option you choose, don't forget to add these depende
 
 #### UniRx Dependency
 
-There are a lot of `UnityWebRequests` usages in this package and they are done in the Edit mode. `UnityWebRequest` relies on coroutines but since the coroutines are a bit tricky to use in Edit mode and [they are a bit problematic](https://www.gokhandogramaci.com/2018/02/05/problems-with-unity3d-coroutines/) in general, UniRx – Reactive Extensions for Unity is used to make these requests.
+There are a lot of `UnityWebRequests` usages in this package and they are done in the Edit mode. `UnityWebRequest` relies on coroutines but since the coroutines are a bit tricky to use in Edit mode and [they are a bit problematic](https://www.gokhand.com/blog/problems-with-unity3d-coroutines) in general, UniRx – Reactive Extensions for Unity is used to make these requests.
 
 To import UniRx into the project, you can open the Package Manager and choose “Add package from git URL…” and use this as the target:
 ```
